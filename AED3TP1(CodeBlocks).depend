@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1536272992 source:e:\proyectos\aed3tp1\src\main.cpp
+	<iostream>
+	<vector>
+	<math.h>
+
