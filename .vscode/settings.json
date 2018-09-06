@@ -1,0 +1,18 @@
+{
+    "files.associations": {
+        "array": "cpp",
+        "*.tcc": "cpp",
+        "cmath": "cpp",
+        "cstdio": "cpp",
+        "cstdlib": "cpp",
+        "unordered_map": "cpp",
+        "fstream": "cpp",
+        "limits": "cpp",
+        "optional": "cpp",
+        "sstream": "cpp",
+        "string_view": "cpp",
+        "cstdint": "cpp",
+        "type_traits": "cpp",
+        "tuple": "cpp"
+    }
+}

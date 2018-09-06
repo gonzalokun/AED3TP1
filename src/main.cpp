@@ -1,30 +1,38 @@
 #include <iostream>
 #include <vector>
+#include <math.h>
 
 //Comentar linea: ctrl-shift-c, descomentar: ctrl-shift-x
 
-//(Por ahora) Todo el c骴igo se encuentra en el mismo archivo
-// para facilitar lectura/localizacion del c骴igo
+//(Por ahora) Todo el c贸digo se encuentra en el mismo archivo
+// para facilitar lectura/localizacion del c贸digo
 
-//C骴igo de Input/Output (IO)
-//Fin c骴igo IO
+//C贸digo de Input/Output (IO)
+//Fin c贸digo IO
 
-//C骴igo de Fuerza Bruta (FB)
+//C贸digo de Fuerza Bruta (FB)
 
 //Generador de conjunto partes
-vector<vector<int>> conjuntoPartes(vector<int> conjuntoInicial){
-    vector<vector<int>> conjuntoFinal;
+std::vector<std::vector<int> > conjuntoPartes(std::vector<int> conjuntoInicial){
+    std::vector<std::vector<int> > conjuntoFinal;
+    unsigned long contador;
+    unsigned long tamFinal = pow(2, conjuntoInicial.size())
+
+    for(contador = 0; contador <= tamFinal; contador++){
+        //
+    }
+
     return conjuntoFinal;
 }
 //
 
-//Fin c骴igo FB
+//Fin c贸digo FB
 
-//C骴igo de Backtracking (BT)
-//Fin c骴igo BT
+//C贸digo de Backtracking (BT)
+//Fin c贸digo BT
 
-//C骴igo de Programaci髇 Din醡ica (PD)
-//Fin c骴igo PD
+//C贸digo de Programaci贸n Din谩mica (PD)
+//Fin c贸digo PD
 
 int main()
 {
