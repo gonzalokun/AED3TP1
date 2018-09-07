@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
+#include <algorithm>
 
 //Comentar linea: ctrl-shift-c, descomentar: ctrl-shift-x
 
@@ -77,11 +78,40 @@ int subsetSumFuerzaBruta(std::vector<int> conjuntoInicial, int valorObjetivo){
 
 //Vamos probando con todo hasta encontrar uno que vaya
 
-int subsetSumBacktracking(std::vector<int> conjuntoInicial, int valorObjetivo){
-    std::vector<int> conjResultado;
+int subsetSumBacktracking(std::vector<int>& conjuntoInicial, int valorObjetivo){ //O(n^3) (Por ahora)
+    //std::vector<int> conjResultado; //quiza no sea necesario
     int longMin = -1;
-    //
+    //int suma = 0;
+
+    //Ordeno el conjunto de numeros de forma creciente
+    std::sort(conjuntoInicial.begin(), conjuntoInicial.end());
+
+    for(int inicio = 0; inicio < conjuntoInicial.size(); inicio++){ //O(n)
+        //
+        for(int proximo = inicio; proximo < conjuntoInicial.size(); proximo++){ //O(n)
+            //HACER UN WHILE ACA QUE HAGA LA SUMAAAA
+            //
+        }
+        //Reseteo la suma
+    }
+
     return longMin;
+}
+
+//Suma los elementos de conjunto de la siguiente forma:
+//Primero suma posInicial y despues a eso le suma los
+//elementos de conjunto empezando desde sumaDesde hasta
+//sumaHasta
+int sumarSalteando(std::vector<int> conjunto, int posInicial, int sumaDesde, int sumaHasta){
+    int suma = 0;
+    suma += conjunto[posInicial];
+
+    //Empieza por salto
+    for(int elem = sumaDesde; elem < sumaHasta && elem < conjunto.size(); elem++){
+        suma += conjunto[elem];
+    }
+
+    return suma;
 }
 
 //Fin código BT
