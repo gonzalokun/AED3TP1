@@ -8,7 +8,7 @@
 //para facilitar lectura/localizacion del código
 
 //Código de Input/Output (IO)
-std::pair<int, std::vector<int>> handleInput(){
+std::pair<int, std::vector<int> > handleInput(){
     int cantElem, valorObjetivo;
     std::vector<int> conjunto;
 
@@ -82,15 +82,15 @@ int subsetSumFuerzaBruta(std::vector<int> conjuntoInicial, int valorObjetivo){
 int main()
 {
     std::cout << "--------------------AED3TP1--------------------" << std::endl;
-    std::pair<int, std::vector<int>> entrada;
+    std::pair<int, std::vector<int> > entrada;
     entrada = handleInput();
 
     std::cout << "Valor Objetivo: " << entrada.first << std::endl;
-    std::cout << "Conjunto: [";
+    std::cout << "Conjunto: {";
     for(int i = 0; i < entrada.second.size(); i++){
         std::cout << entrada.second[i] << ((i==entrada.second.size()-1)?"":", ");
     }
-    std::cout << "]" << std::endl;
+    std::cout << "}" << std::endl;
 
     std::cout << "-----------------------------------------------" << std::endl;
 
@@ -99,5 +99,6 @@ int main()
     //AGREGAR LOS CLOCKS PARA MEDIR TIEMPO
     std::cout << "Resolviendo con Fuerza Bruta" << std::endl;
     resultadoFB = subsetSumFuerzaBruta(entrada.second, entrada.first);
+    std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoFB << std::endl;
     return 0;
 }
