@@ -4,10 +4,10 @@
 
 //Comentar linea: ctrl-shift-c, descomentar: ctrl-shift-x
 
-//Todo el c√≥digo se encuentra en el mismo archivo
-//para facilitar lectura/localizacion del c√≥digo
+//Todo el cÛdigo se encuentra en el mismo archivo
+//para facilitar lectura/localizacion del cÛdigo
 
-//C√≥digo de Input/Output (IO)
+//CÛdigo de Input/Output (IO)
 std::pair<int, std::vector<int> > handleInput(){
     int cantElem, valorObjetivo;
     std::vector<int> conjunto;
@@ -27,9 +27,9 @@ std::pair<int, std::vector<int> > handleInput(){
 
     return std::make_pair(valorObjetivo, conjunto);
 }
-//Fin c√≥digo IO
+//Fin cÛdigo IO
 
-//C√≥digo de Fuerza Bruta (FB)
+//CÛdigo de Fuerza Bruta (FB)
 
 //Resuelvo el problema pasando por todos los conjuntos del conjunto partes
 int subsetSumFuerzaBruta(std::vector<int> conjuntoInicial, int valorObjetivo){
@@ -40,7 +40,7 @@ int subsetSumFuerzaBruta(std::vector<int> conjuntoInicial, int valorObjetivo){
     //bool existe = false;
     int longMin = -1;
 
-    //Ac√° pasamos por todos los conjuntos del conjunto partes
+    //Ac· pasamos por todos los conjuntos del conjunto partes
     for(contador = 0; contador <= tamFinal; contador++){
         int sumaTotal = 0;
         int longActual = 0;
@@ -67,17 +67,27 @@ int subsetSumFuerzaBruta(std::vector<int> conjuntoInicial, int valorObjetivo){
 
     }
 
-    //Ahora longMin es la cardinal m√°s chica los conjuntos que suman valorObjetivo
+    //Ahora longMin es la cardinal m·s chica los conjuntos que suman valorObjetivo
     return longMin;
 }
 
-//Fin c√≥digo FB
+//Fin cÛdigo FB
 
-//C√≥digo de Backtracking (BT)
-//Fin c√≥digo BT
+//CÛdigo de Backtracking (BT)
 
-//C√≥digo de Programaci√≥n Din√°mica (PD)
-//Fin c√≥digo PD
+//Vamos probando con todo hasta encontrar uno que vaya
+
+int subsetSumBacktracking(std::vector<int> conjuntoInicial, int valorObjetivo){
+    std::vector<int> conjResultado;
+    int longMin = -1;
+    //
+    return longMin;
+}
+
+//Fin cÛdigo BT
+
+//CÛdigo de ProgramaciÛn Din·mica (PD)
+//Fin cÛdigo PD
 
 int main()
 {
