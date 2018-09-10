@@ -33,7 +33,7 @@ std::pair<int, std::vector<int> > handleInput(){
 //Código de Fuerza Bruta (FB)
 
 //Resuelvo el problema pasando por todos los conjuntos del conjunto partes
-int subsetSumFuerzaBruta(std::vector<int> conjuntoInicial, int valorObjetivo){
+int subsetSumFuerzaBruta(std::vector<int> conjuntoInicial, int valorObjetivo){//O(n*(2^n))
     //std::vector<std::vector<int> > conjuntoPartes;
     unsigned long contador;
     unsigned long tamFinal = pow(2, conjuntoInicial.size());
@@ -42,13 +42,13 @@ int subsetSumFuerzaBruta(std::vector<int> conjuntoInicial, int valorObjetivo){
     int longMin = -1;
 
     //Acá pasamos por todos los conjuntos del conjunto partes
-    for(contador = 0; contador <= tamFinal; contador++){
+    for(contador = 0; contador <= tamFinal; contador++){//O(2^n)
         int sumaTotal = 0;
         int longActual = 0;
 
         //Me fijo el valor binario de contador, donde los 1 equivalen
         //a incluir el elemento en el conjunto solucion
-        for(int elem = 0; elem < conjuntoInicial.size(); elem++){
+        for(int elem = 0; elem < conjuntoInicial.size(); elem++){//O(n)
             if(contador & (1 << elem)){
                 //El valor va en la solucion
                 sumaTotal += conjuntoInicial[elem];
@@ -74,12 +74,14 @@ int subsetSumFuerzaBruta(std::vector<int> conjuntoInicial, int valorObjetivo){
 
 //Fin código FB
 
+///////////////////////////////////////////////////////////////////////////////////
+
 //Código de Backtracking (BT)
 
 //Vamos probando con todo hasta encontrar uno que vaya
 
 //Devuelve el menor entre a y b, pero si uno es negativo devuelve el otro
-int minimoPositivo(int a, int b){
+int minimoPositivo(int a, int b){ //O(1)
     if(a < 0)
         return b;
     if(b < 0)
@@ -103,45 +105,33 @@ int subsetSumBTRec(std::vector<int>& conjuntoInicial, int valorObjetivo, int ini
             return minimoPositivo(longActual, subsetSumBTRec(conjuntoInicial, valorObjetivo, inicio, longActual - 1, sumActual - conjuntoInicial[inicio - 1]));
         }
         else if(sumActual > valorObjetivo){
+            //Corte De Factibilidad, como esta ordenado el conjunto seguir por esta rama nunca puede dar la solucion
             return -1;
         }
         else{
-            if(sumActual < 0)
-                sumActual = 0;
+            //
+            //if(sumActual < 0)
+                //sumActual = 0;
 
             return minimoPositivo(subsetSumBTRec(conjuntoInicial, valorObjetivo, inicio + 1, longActual + 1, sumActual + conjuntoInicial[inicio]), subsetSumBTRec(conjuntoInicial, valorObjetivo, inicio + 1, longActual, sumActual));
         }
     }
 }
 
-int subsetSumBacktracking(std::vector<int>& conjuntoInicial, int valorObjetivo){
+int subsetSumBacktracking(std::vector<int>& conjuntoInicial, int valorObjetivo){//O(2^n) Explicar con dibujo!!!
     //Ordeno el conjunto
-    std::sort(conjuntoInicial.begin(), conjuntoInicial.end());
-    //int res = subsetSumBTRec(conjuntoInicial, valorObjetivo, 0, 0, 0);
-    //return (res == 0) ? -1 : res;
+    std::sort(conjuntoInicial.begin(), conjuntoInicial.end()); //n*log(n) (REVISAR)
 
-    return subsetSumBTRec(conjuntoInicial, valorObjetivo, 0, 0, -1);
+    //subsetSumBTRec(conjuntoInicial, valorObjetivo, 0, 0, -1); Si sumar 0 en un conjunto sin numeros no es válido
+    return subsetSumBTRec(conjuntoInicial, valorObjetivo, 0, 0, 0); //O(algo)
 }
-
-//Suma los elementos de conjunto de la siguiente forma:
-//Primero suma posInicial y despues a eso le suma los
-//elementos de conjunto empezando desde sumaDesde hasta
-//sumaHasta
-//int sumarSalteando(std::vector<int> conjunto, int posInicial, int sumaDesde, int sumaHasta){
-//    int suma = 0;
-//    suma += conjunto[posInicial];
-//
-//    //Empieza por salto
-//    for(int elem = sumaDesde; elem < sumaHasta && elem < conjunto.size(); elem++){
-//        suma += conjunto[elem];
-//    }
-//
-//    return suma;
-//}
 
 //Fin código BT
 
+///////////////////////////////////////////////////////////////////////////////////
+
 //Código de Programación Dinámica (PD)
+//
 //Fin código PD
 
 int main()
