@@ -78,8 +78,49 @@ int subsetSumFuerzaBruta(std::vector<int> conjuntoInicial, int valorObjetivo){
 
 //Vamos probando con todo hasta encontrar uno que vaya
 
+//Devuelve el menor entre a y b, pero si uno es negativo devuelve el otro
+int minimoPositivo(int a, int b){
+    if(a < 0)
+        return b;
+    if(b < 0)
+        return a;
+
+    return (a < b)? a : b;
+}
+
+//Funcion recursiva que resuelve el backtracking
+int subsetSumBTRec(std::vector<int>& conjuntoInicial, int valorObjetivo, int inicio, int longActual, int sumActual){
+    if(inicio == conjuntoInicial.size()){
+        if(sumActual == valorObjetivo){
+            return longActual;
+        }
+        else{
+            return -1;
+        }
+    }
+    else{
+        if(sumActual == valorObjetivo){
+            return minimoPositivo(longActual, subsetSumBTRec(conjuntoInicial, valorObjetivo, inicio, longActual - 1, sumActual - conjuntoInicial[inicio - 1]));
+        }
+        else if(sumActual > valorObjetivo){
+            return -1;
+        }
+        else{
+            if(sumActual < 0)
+                sumActual = 0;
+
+            return minimoPositivo(subsetSumBTRec(conjuntoInicial, valorObjetivo, inicio + 1, longActual + 1, sumActual + conjuntoInicial[inicio]), subsetSumBTRec(conjuntoInicial, valorObjetivo, inicio + 1, longActual, sumActual));
+        }
+    }
+}
+
 int subsetSumBacktracking(std::vector<int>& conjuntoInicial, int valorObjetivo){
-    //
+    //Ordeno el conjunto
+    std::sort(conjuntoInicial.begin(), conjuntoInicial.end());
+    //int res = subsetSumBTRec(conjuntoInicial, valorObjetivo, 0, 0, 0);
+    //return (res == 0) ? -1 : res;
+
+    return subsetSumBTRec(conjuntoInicial, valorObjetivo, 0, 0, -1);
 }
 
 //Suma los elementos de conjunto de la siguiente forma:
@@ -112,7 +153,7 @@ int main()
     std::cout << "Valor Objetivo: " << entrada.first << std::endl;
     std::cout << "Conjunto: {";
     for(int i = 0; i < entrada.second.size(); i++){
-        std::cout << entrada.second[i] << ((i==entrada.second.size()-1)?"":", ");
+        std::cout << entrada.second[i] << ((i == entrada.second.size()-1)?"":", ");
     }
     std::cout << "}" << std::endl;
 
@@ -124,5 +165,11 @@ int main()
     std::cout << "Resolviendo con Fuerza Bruta" << std::endl;
     resultadoFB = subsetSumFuerzaBruta(entrada.second, entrada.first);
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoFB << std::endl;
+
+        std::cout << "-----------------------------------------------" << std::endl;
+
+    std::cout << "Resolviendo con Backtracking" << std::endl;
+    resultadoBT = subsetSumBacktracking(entrada.second, entrada.first);
+    std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoBT << std::endl;
     return 0;
 }
