@@ -131,7 +131,28 @@ int subsetSumBacktracking(std::vector<int>& conjuntoInicial, int valorObjetivo){
 ///////////////////////////////////////////////////////////////////////////////////
 
 //Código de Programación Dinámica (PD)
-//
+
+//Version Top Down
+
+int subsetSumPDTDRec(){
+    //
+}
+
+int subsetSumPDTD(std::vector<int>& conjuntoInicial, int valorObjetivo){
+    //
+}
+
+//Version Bottom Up
+
+int subsetSumPDBU(){
+    //
+}
+
+//Esta puede no hacer falta
+int subsetSumPDBURec(){
+    //
+}
+
 //Fin código PD
 
 int main()
