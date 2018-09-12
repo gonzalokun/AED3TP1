@@ -147,28 +147,42 @@ int subsetSumPDTDRec(std::vector<int>& conjuntoInicial, int i, int j, std::vecto
     }
 
     if(i == 0){
-        matriz[i][j] = (conjuntoInicial[i] == j) ? 1 : -1;
-        return matriz[i][j];
+        if(matriz[i][j] != -10){
+            return matriz[i][j];
+        }
+        else{
+            matriz[i][j] = (conjuntoInicial[i] == j) ? 1 : -1;
+            return matriz[i][j];
+        }
     }
 
     if(j == 0){
-        matriz[i][j] = 0;
-        return matriz[i][j];
+        if(matriz[i][j] != -10){
+            return matriz[i][j];
+        }
+        else{
+            matriz[i][j] = 0;
+            return matriz[i][j];
+        }
     }
 
     //Induccion
-
-    int m1 = subsetSumPDTDRec(conjuntoInicial, i-1, j, matriz);
-    int m2 = subsetSumPDTDRec(conjuntoInicial, i-1, j - conjuntoInicial[i], matriz);
-
-    if(m1 == -1 && m2 == -1){
-        matriz[i][j] = -1;
+    if(matriz[i][j] != -10){
+        return matriz[i][j];
     }
     else{
-        matriz[i][j] = minimoPositivo(m1, m2) + 1;
-    }
+        int m1 = subsetSumPDTDRec(conjuntoInicial, i-1, j, matriz);
+        int m2 = subsetSumPDTDRec(conjuntoInicial, i-1, j - conjuntoInicial[i], matriz);
 
-    return matriz[i][j];
+        if(m1 == -1 && m2 == -1){
+            matriz[i][j] = -1;
+        }
+        else{
+            matriz[i][j] = minimoPositivo(m1, m2) + 1;
+        }
+
+        return matriz[i][j];
+    }
 }
 
 int subsetSumPDTD(std::vector<int>& conjuntoInicial, int valorObjetivo){
@@ -180,7 +194,7 @@ int subsetSumPDTD(std::vector<int>& conjuntoInicial, int valorObjetivo){
         }
     }
 
-    //
+    return subsetSumPDTDRec(conjuntoInicial, conjuntoInicial.size() - 1, valorObjetivo, matriz);
 }
 
 //Version Bottom Up
