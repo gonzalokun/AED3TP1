@@ -2,6 +2,7 @@
 #include <vector>
 #include <math.h>
 #include <algorithm>
+#include <fstream>
 
 //Comentar linea: ctrl-shift-c, descomentar: ctrl-shift-x
 
@@ -28,6 +29,25 @@ std::pair<int, std::vector<int> > handleInput(){
 
     return std::make_pair(valorObjetivo, conjunto);
 }
+
+std::pair<int, std::vector<int> > handleInput2(){
+    int cantElem, valorObjetivo;
+    std::vector<int> conjunto;
+
+    std::ifstream archivo("input.txt");
+
+    archivo >> cantElem;
+    archivo >> valorObjetivo;
+
+    for(int i = 0; i < cantElem; i++){
+        int elem;
+        archivo >> elem;
+        conjunto.push_back(elem);
+    }
+
+    return std::make_pair(valorObjetivo, conjunto);
+}
+
 //Fin código IO
 
 //Código de Fuerza Bruta (FB)
@@ -134,7 +154,9 @@ int subsetSumBacktracking(std::vector<int>& conjuntoInicial, int valorObjetivo){
 
 //Version Top Down
 
-int subsetSumPDTDRec(std::vector<int>& conjuntoInicial, int i, int j, std::vector<std::vector<int>>& matriz){
+int subsetSumPDTDRec(std::vector<int>& conjuntoInicial, int i, int j, std::vector<std::vector<int> > &matriz){
+
+    //std::cout << "Entre con: i = " << i << ", j = " << j << std::endl;
 
     //Casos Base
 
@@ -146,22 +168,28 @@ int subsetSumPDTDRec(std::vector<int>& conjuntoInicial, int i, int j, std::vecto
         return -1;
     }
 
-    if(i == 0){
-        if(matriz[i][j] != -10){
-            return matriz[i][j];
-        }
-        else{
-            matriz[i][j] = (conjuntoInicial[i] == j) ? 1 : -1;
-            return matriz[i][j];
-        }
-    }
-
     if(j == 0){
         if(matriz[i][j] != -10){
             return matriz[i][j];
         }
         else{
             matriz[i][j] = 0;
+            return matriz[i][j];
+        }
+    }
+
+    if(i == 0){
+        if(matriz[i][j] != -10){
+            return matriz[i][j];
+        }
+        else{
+            //matriz[i][j] = (conjuntoInicial[i] == j) ? 1 : -1;
+            if(j == 0){
+                matriz[i][j] = 0;
+            }
+            else{
+                matriz[i][j] = (conjuntoInicial[i] == j) ? 1 : -1;
+            }
             return matriz[i][j];
         }
     }
@@ -178,34 +206,102 @@ int subsetSumPDTDRec(std::vector<int>& conjuntoInicial, int i, int j, std::vecto
             matriz[i][j] = -1;
         }
         else{
-            matriz[i][j] = minimoPositivo(m1, m2) + 1;
+            if(minimoPositivo(m1, m2) == m1){
+                matriz[i][j] = m1;
+            }
+            else{
+                matriz[i][j] = m2 + 1;
+            }
         }
+
+        //std::cout << "PONGO EN LA MATRIZ EL VALOR " << matriz[i][j] << std::endl;
 
         return matriz[i][j];
     }
 }
 
-int subsetSumPDTD(std::vector<int>& conjuntoInicial, int valorObjetivo){
-    std::vector<std::vector<int>> matriz (conjuntoInicial.size(), std::vector<int>(valorObjetivo + 1));
+int subsetSumPDTD(std::vector<int> &conjuntoInicial, int valorObjetivo){
+    std::vector<std::vector<int> > matriz (conjuntoInicial.size(), std::vector<int>(valorObjetivo + 1));
 
     for(int i = 0; i < conjuntoInicial.size(); i++){
-        for(int j = 0; j < valorObjetivo; j++){
+        for(int j = 0; j < valorObjetivo + 1; j++){
             matriz[i][j] = -10; //Valor arbitrario que indica que no hay nada guardado en [i][j]
         }
     }
 
     return subsetSumPDTDRec(conjuntoInicial, conjuntoInicial.size() - 1, valorObjetivo, matriz);
+
+    //subsetSumPDTDRec(conjuntoInicial, conjuntoInicial.size() - 1, valorObjetivo, matriz);
+
+    /*
+    std::cout << std::endl;
+
+    std::cout << "DEBUG - Imprimiendo Matriz" << std::endl;
+
+    for(int i = 0; i < conjuntoInicial.size(); i++){
+
+        for(int j = 0; j < valorObjetivo + 1; j++){
+            std::cout << matriz[i][j] << " ";
+        }
+
+        std::cout << std::endl;
+    }
+
+    std::cout << std::endl;
+
+    */
+
+    //return matriz[conjuntoInicial.size() - 1][valorObjetivo];
 }
 
 //Version Bottom Up
 
-int subsetSumPDBU(){
-    //
-}
+int subsetSumPDBU(std::vector<int>& conjuntoInicial, int valorObjetivo){
+    std::vector<std::vector<int> > matriz (conjuntoInicial.size(), std::vector<int>(valorObjetivo + 1));
 
-//Esta puede no hacer falta
-int subsetSumPDBURec(){
-    //
+    for(int i = 0; i < conjuntoInicial.size(); i++){
+        matriz[i][0] = 0;
+    }
+
+    for(int j = 1; j < valorObjetivo + 1; j++){
+        matriz[0][j] = (conjuntoInicial[0] == j)? 1 : -1;
+    }
+
+    for(int i = 1 ; i < conjuntoInicial.size(); i++){
+        for(int j = 1; j < valorObjetivo + 1; j++){
+            int m1 = matriz[i - 1][j];
+            int m2 = ((j - conjuntoInicial[i]) < 0)? -1 : matriz[i - 1][j - conjuntoInicial[i]];
+            //matriz[i][j] = (m1 == -1 && m2 == -1)? -1 : (minimoPositivo(m1, m2) + 1);
+            if(minimoPositivo(m1, m2) == m1){
+                matriz[i][j] = m1;
+            }
+            else{
+                matriz[i][j] = m2 + 1;
+            }
+        }
+    }
+
+    return matriz[conjuntoInicial.size() - 1][valorObjetivo];
+
+    /*
+    std::cout << std::endl;
+
+    std::cout << "DEBUG - Imprimiendo Matriz" << std::endl;
+
+    for(int i = 0; i < conjuntoInicial.size(); i++){
+
+        for(int j = 0; j < valorObjetivo + 1; j++){
+            std::cout << matriz[i][j] << " ";
+        }
+
+        std::cout << std::endl;
+    }
+
+    std::cout << std::endl;
+
+    */
+
+    //return matriz[conjuntoInicial.size() - 1][valorObjetivo];
 }
 
 //Fin código PD
@@ -214,7 +310,8 @@ int main()
 {
     std::cout << "--------------------AED3TP1--------------------" << std::endl;
     std::pair<int, std::vector<int> > entrada;
-    entrada = handleInput();
+    //entrada = handleInput();
+    entrada = handleInput2();
 
     std::cout << "Valor Objetivo: " << entrada.first << std::endl;
     std::cout << "Conjunto: {";
@@ -225,17 +322,32 @@ int main()
 
     std::cout << "-----------------------------------------------" << std::endl;
 
-    int resultadoFB = -1, resultadoBT = -1, resultadoPD = -1;
+    int resultadoFB = -1, resultadoBT = -1, resultadoPDTD = -1, resultadoPDBU = -1;
 
     //AGREGAR LOS CLOCKS PARA MEDIR TIEMPO
     std::cout << "Resolviendo con Fuerza Bruta" << std::endl;
     resultadoFB = subsetSumFuerzaBruta(entrada.second, entrada.first);
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoFB << std::endl;
 
-        std::cout << "-----------------------------------------------" << std::endl;
+    std::cout << "-----------------------------------------------" << std::endl;
 
     std::cout << "Resolviendo con Backtracking" << std::endl;
     resultadoBT = subsetSumBacktracking(entrada.second, entrada.first);
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoBT << std::endl;
+
+    std::cout << "-----------------------------------------------" << std::endl;
+
+    std::cout << "Resolviendo con Programancion Dinamica (Algoritmo Top Down)" << std::endl;
+    resultadoPDTD = subsetSumPDTD(entrada.second, entrada.first);
+    std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoPDTD << std::endl;
+
+    std::cout << "-----------------------------------------------" << std::endl;
+
+    std::cout << "Resolviendo con Programancion Dinamica (Algoritmo Bottom Up)" << std::endl;
+    resultadoPDBU = subsetSumPDBU(entrada.second, entrada.first);
+    std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoPDBU << std::endl;
+
+    std::cout << "-----------------------------------------------" << std::endl;
+
     return 0;
 }

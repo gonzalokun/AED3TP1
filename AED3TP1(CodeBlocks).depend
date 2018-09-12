@@ -1,9 +1,10 @@
 # depslib dependency file v1.0
-1536608699 source:e:\proyectos\aed3tp1\src\main.cpp
+1536773549 source:e:\proyectos\aed3tp1\src\main.cpp
 	<iostream>
 	<vector>
 	<math.h>
 	<algorithm>
+	<fstream>
 
 1536539204 source:c:\proyectos\aed3tp1\src\main.cpp
 	<iostream>
