@@ -134,11 +134,52 @@ int subsetSumBacktracking(std::vector<int>& conjuntoInicial, int valorObjetivo){
 
 //Version Top Down
 
-int subsetSumPDTDRec(){
-    //
+int subsetSumPDTDRec(std::vector<int>& conjuntoInicial, int i, int j, std::vector<std::vector<int>>& matriz){
+
+    //Casos Base
+
+    if(i < 0){
+        return -1;
+    }
+
+    if(j < 0){
+        return -1;
+    }
+
+    if(i == 0){
+        matriz[i][j] = (conjuntoInicial[i] == j) ? 1 : -1;
+        return matriz[i][j];
+    }
+
+    if(j == 0){
+        matriz[i][j] = 0;
+        return matriz[i][j];
+    }
+
+    //Induccion
+
+    int m1 = subsetSumPDTDRec(conjuntoInicial, i-1, j, matriz);
+    int m2 = subsetSumPDTDRec(conjuntoInicial, i-1, j - conjuntoInicial[i], matriz);
+
+    if(m1 == -1 && m2 == -1){
+        matriz[i][j] = -1;
+    }
+    else{
+        matriz[i][j] = minimoPositivo(m1, m2) + 1;
+    }
+
+    return matriz[i][j];
 }
 
 int subsetSumPDTD(std::vector<int>& conjuntoInicial, int valorObjetivo){
+    std::vector<std::vector<int>> matriz (conjuntoInicial.size(), std::vector<int>(valorObjetivo + 1));
+
+    for(int i = 0; i < conjuntoInicial.size(); i++){
+        for(int j = 0; j < valorObjetivo; j++){
+            matriz[i][j] = -10; //Valor arbitrario que indica que no hay nada guardado en [i][j]
+        }
+    }
+
     //
 }
 
