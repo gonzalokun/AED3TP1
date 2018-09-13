@@ -3,6 +3,7 @@
 #include <math.h>
 #include <algorithm>
 #include <fstream>
+#include <chrono>
 
 //Comentar linea: ctrl-shift-c, descomentar: ctrl-shift-x
 
@@ -127,6 +128,10 @@ int subsetSumBTRec(std::vector<int>& conjuntoInicial, int valorObjetivo, int ini
         else if(sumActual > valorObjetivo){
             //Corte De Factibilidad, como esta ordenado el conjunto seguir por esta rama nunca puede dar la solucion
             return -1;
+        }
+        else if(sumActual == sumActual + conjuntoInicial[inicio + 1]){
+            //El elemento que sigue es un cero, conviene no incluirlo en el conjunto asi no aumenta la cardinalidad
+            return subsetSumBTRec(conjuntoInicial, valorObjetivo, inicio + 1, longActual, sumActual);
         }
         else{
             //
@@ -308,7 +313,7 @@ int subsetSumPDBU(std::vector<int>& conjuntoInicial, int valorObjetivo){
 
 int main()
 {
-    std::cout << "--------------------AED3TP1--------------------" << std::endl;
+    std::cout << "------------------------AED3TP1------------------------" << std::endl;
     std::pair<int, std::vector<int> > entrada;
     //entrada = handleInput();
     entrada = handleInput2();
@@ -320,34 +325,66 @@ int main()
     }
     std::cout << "}" << std::endl;
 
-    std::cout << "-----------------------------------------------" << std::endl;
+    std::cout << "-------------------------------------------------------" << std::endl;
 
     int resultadoFB = -1, resultadoBT = -1, resultadoPDTD = -1, resultadoPDBU = -1;
 
     //AGREGAR LOS CLOCKS PARA MEDIR TIEMPO
     std::cout << "Resolviendo con Fuerza Bruta" << std::endl;
+
+    auto ahora = std::chrono::_V2::high_resolution_clock::now();
     resultadoFB = subsetSumFuerzaBruta(entrada.second, entrada.first);
+    auto fin = std::chrono::_V2::high_resolution_clock::now();
+
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoFB << std::endl;
 
-    std::cout << "-----------------------------------------------" << std::endl;
+    auto duracion = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
+
+    std::cout << "El Algoritmo de Fuerza Bruta tardo: " << duracion.count() << " milisegundos" << std::endl;
+
+    std::cout << "-------------------------------------------------------" << std::endl;
 
     std::cout << "Resolviendo con Backtracking" << std::endl;
+
+    ahora = std::chrono::_V2::high_resolution_clock::now();
     resultadoBT = subsetSumBacktracking(entrada.second, entrada.first);
+    fin = std::chrono::_V2::high_resolution_clock::now();
+
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoBT << std::endl;
 
-    std::cout << "-----------------------------------------------" << std::endl;
+    duracion = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
+
+    std::cout << "El Algoritmo de Backtracking tardo: " << duracion.count() << " milisegundos" << std::endl;
+
+    std::cout << "-------------------------------------------------------" << std::endl;
 
     std::cout << "Resolviendo con Programancion Dinamica (Algoritmo Top Down)" << std::endl;
+
+    ahora = std::chrono::_V2::high_resolution_clock::now();
     resultadoPDTD = subsetSumPDTD(entrada.second, entrada.first);
+    fin = std::chrono::_V2::high_resolution_clock::now();
+
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoPDTD << std::endl;
 
-    std::cout << "-----------------------------------------------" << std::endl;
+    duracion = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
+
+    std::cout << "El Algoritmo de Prog. Dinamica (Top Down) tardo: " << duracion.count() << " milisegundos" << std::endl;
+
+    std::cout << "-------------------------------------------------------" << std::endl;
 
     std::cout << "Resolviendo con Programancion Dinamica (Algoritmo Bottom Up)" << std::endl;
+
+    ahora = std::chrono::_V2::high_resolution_clock::now();
     resultadoPDBU = subsetSumPDBU(entrada.second, entrada.first);
+    fin = std::chrono::_V2::high_resolution_clock::now();
+
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoPDBU << std::endl;
 
-    std::cout << "-----------------------------------------------" << std::endl;
+    duracion = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
+
+    std::cout << "El Algoritmo de Prog. Dinamica (Bottom Up) tardo: " << duracion.count() << " milisegundos" << std::endl;
+
+    std::cout << "-------------------------------------------------------" << std::endl;
 
     return 0;
 }
