@@ -332,9 +332,10 @@ int main()
     //AGREGAR LOS CLOCKS PARA MEDIR TIEMPO
     std::cout << "Resolviendo con Fuerza Bruta" << std::endl;
 
-    auto ahora = std::chrono::_V2::high_resolution_clock::now();
+    //auto ahora = std::chrono::_V2::high_resolution_clock::now();
+    auto ahora = std::chrono::_V2::steady_clock::now();
     resultadoFB = subsetSumFuerzaBruta(entrada.second, entrada.first);
-    auto fin = std::chrono::_V2::high_resolution_clock::now();
+    auto fin = std::chrono::_V2::steady_clock::now();
 
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoFB << std::endl;
 
@@ -346,9 +347,9 @@ int main()
 
     std::cout << "Resolviendo con Backtracking" << std::endl;
 
-    ahora = std::chrono::_V2::high_resolution_clock::now();
+    ahora = std::chrono::_V2::steady_clock::now();
     resultadoBT = subsetSumBacktracking(entrada.second, entrada.first);
-    fin = std::chrono::_V2::high_resolution_clock::now();
+    fin = std::chrono::_V2::steady_clock::now();
 
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoBT << std::endl;
 
@@ -360,9 +361,9 @@ int main()
 
     std::cout << "Resolviendo con Programancion Dinamica (Algoritmo Top Down)" << std::endl;
 
-    ahora = std::chrono::_V2::high_resolution_clock::now();
+    ahora = std::chrono::_V2::steady_clock::now();
     resultadoPDTD = subsetSumPDTD(entrada.second, entrada.first);
-    fin = std::chrono::_V2::high_resolution_clock::now();
+    fin = std::chrono::_V2::steady_clock::now();
 
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoPDTD << std::endl;
 
@@ -374,9 +375,9 @@ int main()
 
     std::cout << "Resolviendo con Programancion Dinamica (Algoritmo Bottom Up)" << std::endl;
 
-    ahora = std::chrono::_V2::high_resolution_clock::now();
+    ahora = std::chrono::_V2::steady_clock::now();
     resultadoPDBU = subsetSumPDBU(entrada.second, entrada.first);
-    fin = std::chrono::_V2::high_resolution_clock::now();
+    fin = std::chrono::_V2::steady_clock::now();
 
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoPDBU << std::endl;
 

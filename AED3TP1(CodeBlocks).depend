@@ -7,9 +7,11 @@
 	<fstream>
 	<chrono>
 
-1536539204 source:c:\proyectos\aed3tp1\src\main.cpp
+1536885005 source:c:\proyectos\aed3tp1\src\main.cpp
 	<iostream>
 	<vector>
 	<math.h>
 	<algorithm>
+	<fstream>
+	<chrono>
 

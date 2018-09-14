@@ -3,6 +3,9 @@
 \setlength{\parskip}{0.1em}
 \input{Algo1Macros}
 \usepackage{caratula}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+%\usepackage{algorithmicx}
 
 \begin{document}
 
@@ -28,9 +31,48 @@ En este informe vamos a comparar a eficiencia de distintos algoritmos utilizados
 \\
 El objetivo es ver cu\'al de los algoritmos es m\'as eficiente al resolver el problema, se van a presentar 4 algoritmos que resuelven el problema, indicando como funcionan, justificando sus complejidades y comprobando a trav\'ez de experimentos que estas complejidades son ciertas.
 
-\section{Algoritmos}
+\section{Algoritmos y justificaci\'on de complejidades}
+
+Se va a usar la siguiente notaci\'on:
+\begin{itemize}
+	\item $S$ es el conjunto, que tiene $n$ elementos, cada uno con un valor asociado $v_i$ con $i \in \{1,...,n\}$
+	\item $V$ es el valor objetivo
+\end{itemize}
 
 \subsection{Fuerza Bruta}
+El primer algoritmo presentado para resolver el problema es uno de \textit{Fuerza Bruta}, b\'asicamente el algoritmo genera todos los conjuntos posibles con los elementos de $S$ y se fija cu\'al de ellos tiene elementos tales que su suma de exactamente $V$, mientras los calcula se va quedando con el que tiene menor cardinalidad.
+\\
+El algoritmo es el siguiente:
+\\
+%ACA VA EL ALGO
+\begin{algorithm}
+\begin{algorithmic}
+	\Procedure{fuerzaBruta}{S, V}
+		\State $longMinima \gets -1$
+		\State $partes \gets generarConjPartes(S)$
+		\ForAll{Conjunto $c \in partes$}
+			\State $sum \gets sumarElem(c)$
+			\If{$sum == V$}
+				\If{$longMinima == -1$}
+					\State $longMinima \gets |c|$
+				\Else
+					\State $longMinima \gets min(longMinima, |c|)$
+				\EndIf
+			\EndIf
+		\EndFor
+		
+		\Return{$longMinima$}
+	\EndProcedure
+\end{algorithmic}
+\end{algorithm}
 
+%EXPLICAR LAS FUNCIONES DE ADENTRO DEL ALGOOOOOOO
+Como se puede ver el algoritmo ejecuta un ciclo $2^n$ veces, dentro de cada ciclo se realiza la suma de sus elementos, esta suma se puede realizar en tiempo lineal, y las operaciones para calcular el m\'inimo despu\'es de hacer la suma son $O(1)$
+Entonces la complejidad del algoritmo es $O(n * 2^n)$.
+
+\subsection{Backtracking}
+El Backtracking es un algoritmo que se utiliza para encontrar todas o algunas de las soluciones de alg\'un problema, se basa en ir armando la soluci\'on correcta al problema desechando las que no pueden ser correctas a medida que se ejecuta.
+\subsection{Programaci\'on Din\'amica Top Down}
+\subsection{Programaci\'on Din\'amica Bottom Up}
 
 \end{document}
