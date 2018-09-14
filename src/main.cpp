@@ -46,6 +46,8 @@ std::pair<int, std::vector<int> > handleInput2(){
         conjunto.push_back(elem);
     }
 
+    archivo.close();
+
     return std::make_pair(valorObjetivo, conjunto);
 }
 
@@ -129,7 +131,7 @@ int subsetSumBTRec(std::vector<int>& conjuntoInicial, int valorObjetivo, int ini
             //Corte De Factibilidad, como esta ordenado el conjunto seguir por esta rama nunca puede dar la solucion
             return -1;
         }
-        else if(sumActual == sumActual + conjuntoInicial[inicio + 1]){
+        else if(sumActual == sumActual + conjuntoInicial[inicio]){
             //El elemento que sigue es un cero, conviene no incluirlo en el conjunto asi no aumenta la cardinalidad
             return subsetSumBTRec(conjuntoInicial, valorObjetivo, inicio + 1, longActual, sumActual);
         }
@@ -339,9 +341,9 @@ int main()
 
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoFB << std::endl;
 
-    auto duracion = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
+    auto duracion1 = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
 
-    std::cout << "El Algoritmo de Fuerza Bruta tardo: " << duracion.count() << " milisegundos" << std::endl;
+    std::cout << "El Algoritmo de Fuerza Bruta tardo: " << duracion1.count() << " milisegundos" << std::endl;
 
     std::cout << "-------------------------------------------------------" << std::endl;
 
@@ -353,9 +355,9 @@ int main()
 
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoBT << std::endl;
 
-    duracion = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
+    auto duracion2 = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
 
-    std::cout << "El Algoritmo de Backtracking tardo: " << duracion.count() << " milisegundos" << std::endl;
+    std::cout << "El Algoritmo de Backtracking tardo: " << duracion2.count() << " milisegundos" << std::endl;
 
     std::cout << "-------------------------------------------------------" << std::endl;
 
@@ -367,9 +369,9 @@ int main()
 
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoPDTD << std::endl;
 
-    duracion = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
+    auto duracion3 = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
 
-    std::cout << "El Algoritmo de Prog. Dinamica (Top Down) tardo: " << duracion.count() << " milisegundos" << std::endl;
+    std::cout << "El Algoritmo de Prog. Dinamica (Top Down) tardo: " << duracion3.count() << " milisegundos" << std::endl;
 
     std::cout << "-------------------------------------------------------" << std::endl;
 
@@ -381,11 +383,25 @@ int main()
 
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoPDBU << std::endl;
 
-    duracion = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
+    auto duracion4 = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
 
-    std::cout << "El Algoritmo de Prog. Dinamica (Bottom Up) tardo: " << duracion.count() << " milisegundos" << std::endl;
+    std::cout << "El Algoritmo de Prog. Dinamica (Bottom Up) tardo: " << duracion4.count() << " milisegundos" << std::endl;
 
     std::cout << "-------------------------------------------------------" << std::endl;
 
+    //Escritura de output en archivo
+
+    std::ofstream salida("output.txt", std::ios::app);
+
+    salida << entrada.second.size() << std::endl;
+    salida << entrada.first << std::endl;
+    salida << std::endl;
+    salida << duracion1.count() << std::endl;
+    salida << duracion2.count() << std::endl;
+    salida << duracion3.count() << std::endl;
+    salida << duracion4.count() << std::endl;
+    salida << "------------------------------" <<std::endl;
+
+    salida.close();
     return 0;
 }

@@ -42,21 +42,30 @@ Se va a usar la siguiente notaci\'on:
 \subsection{Fuerza Bruta}
 El primer algoritmo presentado para resolver el problema es uno de \textit{Fuerza Bruta}, b\'asicamente el algoritmo genera todos los conjuntos posibles con los elementos de $S$ y se fija cu\'al de ellos tiene elementos tales que su suma de exactamente $V$, mientras los calcula se va quedando con el que tiene menor cardinalidad.
 \\
-El algoritmo es el siguiente:
+El algoritmo implementado en este trabajo práctico es el siguiente:
 \\
 %ACA VA EL ALGO
 \begin{algorithm}
 \begin{algorithmic}
-	\Procedure{fuerzaBruta}{S, V}
+	\Procedure{subsetSumFuerzaBruta}{$S$, $V$}
 		\State $longMinima \gets -1$
-		\State $partes \gets generarConjPartes(S)$
-		\ForAll{Conjunto $c \in partes$}
-			\State $sum \gets sumarElem(c)$
-			\If{$sum == V$}
+		%\State $partes \gets generarConjPartes(S)$\Comment{$O(2^n)$}
+		\For{$contador$ de $0$ a $2^{|S|} - 1$}\Comment{Se ejecuta $2^{|S|}$ veces}
+			\State $longActual \gets 0$
+			\State $sumaTotal \gets 0$
+				
+			\For{$i$ de $0$ a $|S| - 1$} \Comment{Se ejecuta $|S|$ veces}
+				\If{El $i$-esimo bit de $contador$ es $1$}
+					\State $sumaTotal \gets sumaTotal + S[i]$
+					\State $longActual \gets longActual + 1$
+				\EndIf
+			\EndFor
+			
+			\If{$sumaTotal == V$}\Comment{Toda esta parte es $O(1)$}
 				\If{$longMinima == -1$}
-					\State $longMinima \gets |c|$
+					\State $longMinima \gets longActual$
 				\Else
-					\State $longMinima \gets min(longMinima, |c|)$
+					\State $longMinima \gets min(longMinima, longActual)$
 				\EndIf
 			\EndIf
 		\EndFor
@@ -66,13 +75,105 @@ El algoritmo es el siguiente:
 \end{algorithmic}
 \end{algorithm}
 
-%EXPLICAR LAS FUNCIONES DE ADENTRO DEL ALGOOOOOOO
-Como se puede ver el algoritmo ejecuta un ciclo $2^n$ veces, dentro de cada ciclo se realiza la suma de sus elementos, esta suma se puede realizar en tiempo lineal, y las operaciones para calcular el m\'inimo despu\'es de hacer la suma son $O(1)$
-Entonces la complejidad del algoritmo es $O(n * 2^n)$.
+Este algoritmo genera todos los subconjuntos del conjunto partes de $S$ de la siguiente forma, podemos interpretar cada subconjunto de $S$ como un conjunto donde algunos elementos de $S$ están y otros no. Entonces si pensamos a cada elemento como un bit donde 0 indica que el elemento no esta y 1 que si, podemos ver que con $|S|$ bits nos alcanza para generar todos los subconjuntos del conjunto partes de $S$.
+\\
+El algoritmo ejecuta un ciclo que incrementa un contador (que usamos para saber en que subconjunto está) $2^{|S|}$ veces, dentro de cada ciclo se fija el valor de cada bit de contador (que tiene $|S|$ bits) y suma los elementos de $S$ que correspondan a la posición del bit que valga 1, entonces como mucho se suman $|S|$ elementos, las operaciones para calcular el m\'inimo despu\'es de hacer la suma son $O(1)$.
+\\
+Entonces la complejidad del algoritmo es $O(|S| * 2^|S|) = O(n * 2^n)$.
 
 \subsection{Backtracking}
-El Backtracking es un algoritmo que se utiliza para encontrar todas o algunas de las soluciones de alg\'un problema, se basa en ir armando la soluci\'on correcta al problema desechando las que no pueden ser correctas a medida que se ejecuta.
-\subsection{Programaci\'on Din\'amica Top Down}
-\subsection{Programaci\'on Din\'amica Bottom Up}
+El Backtracking es un algoritmo que se utiliza para encontrar todas o algunas de las soluciones de alg\'un problema, se basa en ir armando la soluci\'on correcta al problema desechando las que no pueden ser correctas a medida que se ejecuta, lo que se conoce como poda, existen podas de \textbf{factibilidad}, que son las que se realizan cuando se sabe que la rama de soluciones no puede llegar al resultado y podas de \textbf{optimalidad} que se realizan para optimizar la solución en ciertos casos.
+Esa característica de desechar soluciones que no pueden ser correctas lo hace superior a probar todas las posibles.
+\\
+El algoritmo de backtracking implementado en este trabajo es el siguiente:
 
+\begin{algorithm}
+\begin{algorithmic}
+	\Procedure{subsetSumBacktracking}{$S$, $V$}
+		\State $ordenar(S)$
+		
+		\Return $subsetSumBacktrackingAUX(S, V, 0, 0, 0)$
+	\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\begin{algorithmic}
+	\Procedure{subsetSumBacktrackingAUX}{$S$, $V$, $inicio$, $longActual$, $sumActual$}
+		\If{$inicio == |S|$}
+			\If{$sumActual == V$}
+				\State \Return $longActual$
+			\Else
+				\State \Return $-1$
+			\EndIf
+		\Else
+			\If{$sumActual == V$}
+				\State \Return $minPos(longActual,subsetSumBacktrackingAUX(S,V,inicio,longActual-1,sumActual-S[inicio-1]))$
+			\ElsIf{$sumActual > V$}
+				\State \Return $-1$
+			\ElsIf{$sumActual == sumActual + S[inicio]$}
+				\State \Return $subsetSumBacktrackingAUX(S, V, inicio + 1, longActual, sumActual)$
+			\Else
+				\State \Return $minPos(subsetSumBacktrackingAUX(S,V,inicio+1, longActual+1, sumActual + S[inicio]), subsetSumBacktrackingAUX(S,V,inicio+1, longActual, sumActual))$
+			\EndIf
+		\EndIf
+	\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+El algoritmo implementado de forma recursiva aque resuelve el problema funciona de la siguiente forma, cada elemento de $S$ puede estar o no en la solución, entonces en cada recursión pido el minimo entre tomar al elemento como parte de la solucion y no tomarlo. El caso base es cuando ya no quedan elementos para tomar, en ese caso se ve si la suma da o no y se devuelve la longitud correspondiente (-1 si no da y la longitud de la solucion si da). Si se alcanza al valor objetivo después de agregar a un elemento, compara la longitud de esa solución con la que no incluyo ese elemento haciendo recursión y se queda con la menor. $minPos(a, b)$ devuelve el menor entre a y b, si uno de los dos es negativo, devuelve el otro y si los dos son negativos devuelve a uno de los dos, de esa forma si no hay solución se puede devolver $-1$.
+\\
+Este algoritmo supone que $S$ esta ordenado de forma creciente, esto es importante para poder justificar una de las podas hechas. La \textbf{poda de factibilidad} del algoritmo consiste en que, si la suma al agregar un elemento se pasa de $V$, entonces esa rama de solución nunca va a encontrar un subconjunto que lo sume, ya que al estar ordenado los elementos que siguen son mayores.
+La \textbf{poda de optimalidad} se realiza cuando el elemento que se va a agregar conjunto de solucion es el 0, como un 0 no aporta nada a la suma, se saltea y se ve directamente el elemento siguiente.
+
+Para calcular la complejidad hay que ver como se van abriendo las llamadas recursivas, si ignoramos las podas (que no afectan este cálculo) podemos ver que en cada recursión se van realizando dos llamadas a la función, una si se incluye al elemento actual en la solución y una si no. De esa forma la cantidad de llamadas va aumentando de forma exponencial a medida que sigue la función, hasta que se terminen los elementos del conjunto. Si graficamos como se va ejecutando la función se va a formar un árbol completo (aunque varias hojas tendrían lo mismo). Por lo que la función se ejecuta $2^{|S|} = 2^n$ veces.
+Por lo tanto la complejidad de este algoritmo es $O(|S|*log(|S|) + 2^|S|) = O(n*log(n) + 2^n) \in O(n*2^n)$.
+ 
+\subsection{Programaci\'on Din\'amica Top Down}
+La programación dinámica es un método de programación que se basa en resolver un problema dividiéndolo en subproblemas de forma recursiva y guardando resultados ya calculados para no volverlos a calcular. Para evitar resolver los mismos subproblemas existen dos "estilos" de programación dinámica, en esta sección se muestra el estilo Top Down.
+Este tipo de programación dinámica se parece mucho a como uno lo resolveria con recursión, se va partiendo el problema principal en subproblemas más pequeños, con la diferencia de que de realiza un proceso de \textbf{memoización}, o en otras palabras, se guardan los resultados en una tabla para buscarlos en lugar de calcularlos de nuevo.
+\\
+Para este algoritmo la tabla va a representar lo siguiente, las columas de la tabla representan un posible valor objetivo, mientras que las filas representan la cantidad de elementos usados de $S$ (empezando desde el primero), y en cada celda se guarda el cardinal del conjunto más chico que forma el valor objetivo que corresponde a la columna, así por ejemplo la posición [3][6] tiene guardado el cardinal de los subconjuntos más chico que usa los primeros 3 elementos de $S$ y suma $6$, en caso de no haber subconjunto que sume el valor de la columna, en la celda habrá un -1.
+\\
+Entonces el algoritmo queda asi:
+
+\begin{algorithm}
+\begin{algorithmic}
+	\Procedure{subsetSumPDTD}{$S$, $V$}
+		\State $matriz \gets$ matriz de $|S|$ filas y $V+1$ columnas \Comment{Esto es $O(|S|*V) = O(n*V)$}
+		\State $subsetSumPDTDRec(S, |S|-1, V, matriz)$ \Comment{La matriz se pasa por referencia}
+		\State \Return $matriz[|S|-1][V]$
+	\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\begin{algorithmic}
+	\Procedure{subsetSumPDTDRec}{$S$, $i$, $j$, $matriz$} \Comment{$matriz$ se pasa por referencia}
+		\If{$i < 0$}
+			\State \Return $-1$
+		\EndIf
+		\If{$j < 0$}
+			\State \Return $-1$
+		\EndIf
+		\If{}
+		\EndIf
+		\If{}
+		\EndIf
+		\If{}
+		\EndIf
+	\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+%Acá va la justificación de la complejidad
+
+\subsection{Programaci\'on Din\'amica Bottom Up}
+Explicación de algo bottom up
+\section{Experimentos}
+Acá van los experimentos
+\section{Conclusiones}
+Acá van las conclusiones (si las hay)
+\section{Código}
+Acá va el code
 \end{document}
