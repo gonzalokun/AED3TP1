@@ -7,10 +7,10 @@
 
 //Comentar linea: ctrl-shift-c, descomentar: ctrl-shift-x
 
-//Todo el código se encuentra en el mismo archivo
-//para facilitar lectura/localizacion del código
+//Todo el cï¿½digo se encuentra en el mismo archivo
+//para facilitar lectura/localizacion del cï¿½digo
 
-//Código de Input/Output (IO)
+//Cï¿½digo de Input/Output (IO)
 std::pair<int, std::vector<int> > handleInput(){
     int cantElem, valorObjetivo;
     std::vector<int> conjunto;
@@ -51,9 +51,9 @@ std::pair<int, std::vector<int> > handleInput2(){
     return std::make_pair(valorObjetivo, conjunto);
 }
 
-//Fin código IO
+//Fin cï¿½digo IO
 
-//Código de Fuerza Bruta (FB)
+//Cï¿½digo de Fuerza Bruta (FB)
 
 //Resuelvo el problema pasando por todos los conjuntos del conjunto partes
 int subsetSumFuerzaBruta(std::vector<int> conjuntoInicial, int valorObjetivo){//O(n*(2^n))
@@ -64,7 +64,7 @@ int subsetSumFuerzaBruta(std::vector<int> conjuntoInicial, int valorObjetivo){//
     //bool existe = false;
     int longMin = -1;
 
-    //Acá pasamos por todos los conjuntos del conjunto partes
+    //Acï¿½ pasamos por todos los conjuntos del conjunto partes
     for(contador = 0; contador <= tamFinal; contador++){//O(2^n)
         int sumaTotal = 0;
         int longActual = 0;
@@ -91,15 +91,15 @@ int subsetSumFuerzaBruta(std::vector<int> conjuntoInicial, int valorObjetivo){//
 
     }
 
-    //Ahora longMin es la cardinal más chica los conjuntos que suman valorObjetivo
+    //Ahora longMin es la cardinal mï¿½s chica los conjuntos que suman valorObjetivo
     return longMin;
 }
 
-//Fin código FB
+//Fin cï¿½digo FB
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-//Código de Backtracking (BT)
+//Cï¿½digo de Backtracking (BT)
 
 //Vamos probando con todo hasta encontrar uno que vaya
 
@@ -149,15 +149,15 @@ int subsetSumBacktracking(std::vector<int>& conjuntoInicial, int valorObjetivo){
     //Ordeno el conjunto
     std::sort(conjuntoInicial.begin(), conjuntoInicial.end()); //n*log(n) (REVISAR)
 
-    //subsetSumBTRec(conjuntoInicial, valorObjetivo, 0, 0, -1); Si sumar 0 en un conjunto sin numeros no es válido
+    //subsetSumBTRec(conjuntoInicial, valorObjetivo, 0, 0, -1); Si sumar 0 en un conjunto sin numeros no es vï¿½lido
     return subsetSumBTRec(conjuntoInicial, valorObjetivo, 0, 0, 0); //O(algo)
 }
 
-//Fin código BT
+//Fin cï¿½digo BT
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-//Código de Programación Dinámica (PD)
+//Cï¿½digo de Programaciï¿½n Dinï¿½mica (PD)
 
 //Version Top Down
 
@@ -311,7 +311,7 @@ int subsetSumPDBU(std::vector<int>& conjuntoInicial, int valorObjetivo){
     //return matriz[conjuntoInicial.size() - 1][valorObjetivo];
 }
 
-//Fin código PD
+//Fin cï¿½digo PD
 
 int main()
 {
@@ -391,16 +391,16 @@ int main()
 
     //Escritura de output en archivo
 
-    std::ofstream salida("output.txt", std::ios::app);
+    std::ofstream salida("output.csv", std::ios::app);
 
-    salida << entrada.second.size() << std::endl;
-    salida << entrada.first << std::endl;
-    salida << std::endl;
-    salida << duracion1.count() << std::endl;
-    salida << duracion2.count() << std::endl;
-    salida << duracion3.count() << std::endl;
-    salida << duracion4.count() << std::endl;
-    salida << "------------------------------" <<std::endl;
+    //salida << entrada.second.size() << std::endl;
+    //salida << entrada.first << std::endl;
+    //salida << std::endl;
+    salida << entrada.second.size() << "," << entrada.first << "," << duracion1.count() << "," << duracion2.count() << "," << duracion3.count() << "," << duracion4.count() << std::endl;
+    //salida << entrada.second.size() << " " << entrada.first << " " << duracion2.count() << std::endl;
+    //salida << entrada.second.size() << " " << entrada.first << " " << duracion3.count() << std::endl;
+    //salida << entrada.second.size() << " " << entrada.first << " " << duracion4.count() << std::endl;
+    //salida << "------------------------------" <<std::endl;
 
     salida.close();
     return 0;

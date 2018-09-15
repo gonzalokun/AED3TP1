@@ -130,7 +130,7 @@ Para calcular la complejidad hay que ver como se van abriendo las llamadas recur
 Por lo tanto la complejidad de este algoritmo es $O(|S|*log(|S|) + 2^|S|) = O(n*log(n) + 2^n) \in O(n*2^n)$.
  
 \subsection{Programaci\'on Din\'amica Top Down}
-La programación dinámica es un método de programación que se basa en resolver un problema dividiéndolo en subproblemas de forma recursiva y guardando resultados ya calculados para no volverlos a calcular. Para evitar resolver los mismos subproblemas existen dos "estilos" de programación dinámica, en esta sección se muestra un algoritmo en el estilo \textbf{Top Down}.
+La programación dinámica es un método de programación que se basa en resolver un problema dividiéndolo en subproblemas de forma recursiva y guardando resultados ya calculados para no volverlos a calcular. Para evitar resolver los mismos subproblemas existen dos estilos de programación dinámica, en esta sección se muestra un algoritmo en el estilo \textbf{Top Down}.
 Este tipo de programación dinámica se parece mucho a como uno lo resolveria con recursión, se va partiendo el problema principal en subproblemas más pequeños, con la diferencia de que de realiza un proceso de \textbf{memoización}, o en otras palabras, se guardan los resultados en una tabla para buscarlos en lugar de calcularlos de nuevo.
 \\
 Para este algoritmo la tabla va a representar lo siguiente, las columas de la tabla representan un posible valor objetivo, mientras que las filas representan la cantidad de elementos usados de $S$ (empezando desde el primero), y en cada celda se guarda el cardinal del conjunto más chico que forma el valor objetivo que corresponde a la columna, así por ejemplo la posición [3][6] tiene guardado el cardinal de los subconjuntos más chico que usa los primeros 3 elementos de $S$ y suma $6$, en caso de no haber subconjunto que sume el valor de la columna, en la celda habrá un -1.
@@ -205,7 +205,8 @@ Entonces el algoritmo queda asi:
 %Acá va la justificación de la complejidad
 \pagebreak
 
-Este algoritmo se va ejecutando de forma parecida al de backtracking, se van haciendo dos llamados a funciones en cada recursión, pero estas recursiones sólo se realizan una vez, si en la matriz hay un $-10$ entonces ese valor no fue computado y se calcula. Pero una vez calculado, se guarda y se se pide entonces se accede directamente al guardado. También la recursión se realiza sobre el tamaño de la matriz, por lo que esta acotada por $O(|S|*V) = O(n*V)$
+Este algoritmo llega a la solución usando la misma idea del de que el de backtracking, tomando el minimo entre la solución que incluye el elemento actual y el que no, así se van partiendo los subproblemas hasta llegar a los casos base, que son cuando se pasen las dimensiones de la matriz que resulta en un $-1$ y cuando se llega a la columna $0$ donde se devuelve 0.
+También se va ejecutando de forma parecida al de backtracking, se van haciendo dos llamados a funciones en cada recursión, pero estas recursiones sólo se realizan una vez, si en la matriz hay un $-10$ entonces ese valor no fue computado y se calcula. Pero una vez calculado, se guarda y se se pide entonces se accede directamente al guardado. También la recursión se realiza sobre el tamaño de la matriz, por lo que esta acotada por $O(|S|*V) = O(n*V)$.
 %EXPLICAR MEJOR ESTOOOOOOOO
 
 \subsection{Programaci\'on Din\'amica Bottom Up}
@@ -239,9 +240,9 @@ El algoritmo es el siguiente:
 				\State $m2 \gets matriz[i-1][j - S[i]]$
 			\EndIf
 			\If{$minPos(m1, m2) == m1$}
-				\State $matriz[i][j] \gets m1$
+				\State $matriz[i][j] \gets m1$ \Comment{S[i] no es parte de la solución}
 			\Else
-				\State $matriz[i][j] \gets m2 + 1$
+				\State $matriz[i][j] \gets m2 + 1$ \Comment{S[i] es parte de la solución, hay que sumar 1}
 			\EndIf
 			\EndFor
 		\EndFor
@@ -251,7 +252,12 @@ El algoritmo es el siguiente:
 \end{algorithmic}
 \end{algorithm}
 
-Este algoritmo...
+En este algoritmo la matriz se interpreta igual que en el anterior, las columnas son posibles valores objetivos y las filas son la cantidad de elementos (tomados desde el primero) del conjunto, el valor de toda la columna $0$ va a ser $0$, ya que dado cualquier conjunto $S$, el conjunto vacío es un subconjunto de $S$ y loa suma de sus elementos es $0$. En la primera fila todos las columnas van a tener $-1$ cuando el número de la columna no sea igual al primer elemento de $S$ y $1$ cuando sea. Basándonos en la recursión podemos ver que tomando un elemento, la menor cardinal de un subconjunto que suma $V$ es la mínima cardinal entre el conjunto que suma $V$ y no incluya al elemento actual y la cardinal del conjunto que suma $V$ e incluye el elemento actual de $S$. Entonces para una celda ($i$, $j$) la cardinal va a ser el mínimo entre ($i-1$, $j$) y
+($i-1$, $j-S[i]$), si ambos son negativos entonces el cardinal es $-1$. Si el cardinal mínimo es el de ($i-1$, $j-S[i]$), entonces hay que sumarle $1$ para que tome en cuenta la inclusión del elemento $S[i]$ en la solución. Entonces la solución al problema se encontraría en la celda ($|S|-1$, $V$).
+\\
+La complejidad de este algoritmo es simple de calcular, podemos ignorar la complejidad de los dos primeros ciclos ya que la que realmente pesa es la del tercero, que se ejecuta $|S|-1 * V$ veces, lo que significa que es $O(|S|*V)$.
+\\
+Entonces el algoritmo es $O(|S|*V) = O(n*V)$.
 
 \section{Experimentos}
 Acá van los experimentos
