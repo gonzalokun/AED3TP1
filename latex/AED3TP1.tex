@@ -130,22 +130,12 @@ Para calcular la complejidad hay que ver como se van abriendo las llamadas recur
 Por lo tanto la complejidad de este algoritmo es $O(|S|*log(|S|) + 2^|S|) = O(n*log(n) + 2^n) \in O(n*2^n)$.
  
 \subsection{Programaci\'on Din\'amica Top Down}
-La programación dinámica es un método de programación que se basa en resolver un problema dividiéndolo en subproblemas de forma recursiva y guardando resultados ya calculados para no volverlos a calcular. Para evitar resolver los mismos subproblemas existen dos "estilos" de programación dinámica, en esta sección se muestra el estilo Top Down.
+La programación dinámica es un método de programación que se basa en resolver un problema dividiéndolo en subproblemas de forma recursiva y guardando resultados ya calculados para no volverlos a calcular. Para evitar resolver los mismos subproblemas existen dos "estilos" de programación dinámica, en esta sección se muestra un algoritmo en el estilo \textbf{Top Down}.
 Este tipo de programación dinámica se parece mucho a como uno lo resolveria con recursión, se va partiendo el problema principal en subproblemas más pequeños, con la diferencia de que de realiza un proceso de \textbf{memoización}, o en otras palabras, se guardan los resultados en una tabla para buscarlos en lugar de calcularlos de nuevo.
 \\
 Para este algoritmo la tabla va a representar lo siguiente, las columas de la tabla representan un posible valor objetivo, mientras que las filas representan la cantidad de elementos usados de $S$ (empezando desde el primero), y en cada celda se guarda el cardinal del conjunto más chico que forma el valor objetivo que corresponde a la columna, así por ejemplo la posición [3][6] tiene guardado el cardinal de los subconjuntos más chico que usa los primeros 3 elementos de $S$ y suma $6$, en caso de no haber subconjunto que sume el valor de la columna, en la celda habrá un -1.
 \\
 Entonces el algoritmo queda asi:
-
-\begin{algorithm}
-\begin{algorithmic}
-	\Procedure{subsetSumPDTD}{$S$, $V$}
-		\State $matriz \gets$ matriz de $|S|$ filas y $V+1$ columnas \Comment{Esto es $O(|S|*V) = O(n*V)$}
-		\State $subsetSumPDTDRec(S, |S|-1, V, matriz)$ \Comment{La matriz se pasa por referencia}
-		\State \Return $matriz[|S|-1][V]$
-	\EndProcedure
-\end{algorithmic}
-\end{algorithm}
 
 \begin{algorithm}
 \begin{algorithmic}
@@ -156,20 +146,113 @@ Entonces el algoritmo queda asi:
 		\If{$j < 0$}
 			\State \Return $-1$
 		\EndIf
-		\If{}
+		\If{$j == 0$}
+			\If{$matriz[i][j] != -10$}
+				\State \Return $matriz[i][j]$
+			\Else
+				\State $matriz[i][j] \gets 0$
+				\State \Return $matriz[i][j]$
+			\EndIf
 		\EndIf
-		\If{}
+		\If{$i == 0$}
+			\If{$matriz[i][j] != -10$}
+				\State \Return $matriz[i][j]$
+			\Else
+				\If{$j == 0$}
+					\State $matriz[i][j] \gets 0$			
+				\Else
+					\If{$S[i] == j$}
+						\State $matriz[i][j] \gets 1$
+					\Else
+						\State $matriz[i][j] \gets -1$
+					\EndIf
+				\EndIf
+				\State \Return $matriz[i][j]$
+			\EndIf
 		\EndIf
-		\If{}
+		
+		\If{$matriz[i][j] != -10$}
+			\State \Return $matriz[i][j]$
+		\Else
+			\State $m1 \gets subsetSumPDTDRec(S, i-1, j, matriz)$ \Comment{Calculo el problema sin contar el elemento actual}
+			\State $m2 \gets subsetSumPDTDRec(S, i-1, j - s[i], matriz)$ \Comment{Calculo el problema teniéndolo en cuenta}
+			\If{$m1 == -1$ and $m2 == -1$}
+				\State $matriz[i][j] \gets -1$
+			\Else
+				\If{$minPos(m1, m2) == m1$}
+					\State $matriz[i][j] \gets m1$
+				\Else
+					\State $matriz[i][j] \gets m2 + 1$ \Comment{El mínimo vino de incluir el elemento, entonces la longitud es uno más de lo que devolvió el subproblema}
+				\EndIf
+			\EndIf
+			
+			\State \Return $matriz[i][j]$
 		\EndIf
 	\EndProcedure
 \end{algorithmic}
 \end{algorithm}
 
+\begin{algorithm}
+\begin{algorithmic}
+	\Procedure{subsetSumPDTD}{$S$, $V$}
+		\State $matriz \gets$ matriz de $|S|$ filas y $V+1$ columnas con $-10$ en cada valor \Comment{Esto es $O(|S|*V) = O(n*V)$}
+		\State $subsetSumPDTDRec(S, |S|-1, V, matriz)$ \Comment{La matriz se pasa por referencia}
+		\State \Return $matriz[|S|-1][V]$
+	\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
 %Acá va la justificación de la complejidad
+\pagebreak
+
+Este algoritmo se va ejecutando de forma parecida al de backtracking, se van haciendo dos llamados a funciones en cada recursión, pero estas recursiones sólo se realizan una vez, si en la matriz hay un $-10$ entonces ese valor no fue computado y se calcula. Pero una vez calculado, se guarda y se se pide entonces se accede directamente al guardado. También la recursión se realiza sobre el tamaño de la matriz, por lo que esta acotada por $O(|S|*V) = O(n*V)$
+%EXPLICAR MEJOR ESTOOOOOOOO
 
 \subsection{Programaci\'on Din\'amica Bottom Up}
-Explicación de algo bottom up
+
+El otro estilo de Programación Dinámica se conoce como \textbf{Bottom Up}, en lugar de resolver el problema partiendolo en subproblemas, va resolviendo los subproblemas primero y llega a la solución del problema principal.
+\\
+En lugar de utilizar la recursión directamente, deducimos de ésta una formula que nos permita ir llenando la misma matriz que se uso en el algoritmo Top Down de forma directa. Y al final de devuelve la celda correspondiente de la matriz.
+\\
+El algoritmo es el siguiente:
+
+\begin{algorithm}
+\begin{algorithmic}
+	\Procedure{subsetSumPDBU}{$S$, $V$}
+		\State $matriz \gets$ crear matriz de $|S|$ filas y $V+1$ columnas
+		\For{$i$ de $0$ a $|S| - 1$}
+			\State $matriz[i][0] \gets 0$
+		\EndFor
+		\For{$j$ de $0$ a $V$}
+			\If{$S[0] == j$}
+				\State $matriz[0][j] \gets 1$
+			\Else
+				\State $matriz[0][j] \gets -1$
+			\EndIf
+		\EndFor
+		\For{$i$ de $1$ a $|S| - 1$}
+			\For{$j$ de $1$ a $V$}
+			\State $m1 \gets matriz[i-1][j]$			
+			\If{$j - S[i] < 0$}
+				\State $m2 \gets -1$
+			\Else
+				\State $m2 \gets matriz[i-1][j - S[i]]$
+			\EndIf
+			\If{$minPos(m1, m2) == m1$}
+				\State $matriz[i][j] \gets m1$
+			\Else
+				\State $matriz[i][j] \gets m2 + 1$
+			\EndIf
+			\EndFor
+		\EndFor
+		
+		\State \Return $matriz[|S|-1][V]$
+	\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+Este algoritmo...
+
 \section{Experimentos}
 Acá van los experimentos
 \section{Conclusiones}
