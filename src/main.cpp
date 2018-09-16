@@ -321,17 +321,18 @@ int main()
     entrada = handleInput2();
 
     std::cout << "Valor Objetivo: " << entrada.first << std::endl;
-    std::cout << "Conjunto: {";
-    for(int i = 0; i < entrada.second.size(); i++){
-        std::cout << entrada.second[i] << ((i == entrada.second.size()-1)?"":", ");
-    }
-    std::cout << "}" << std::endl;
+    std::cout << "Tam. Conjunto: " << entrada.second.size() << std::endl;
+//    std::cout << "Conjunto: {";
+//    for(int i = 0; i < entrada.second.size(); i++){
+//        std::cout << entrada.second[i] << ((i == entrada.second.size()-1)?"":", ");
+//    }
+//    std::cout << "}" << std::endl;
 
     std::cout << "-------------------------------------------------------" << std::endl;
 
     int resultadoFB = -1, resultadoBT = -1, resultadoPDTD = -1, resultadoPDBU = -1;
 
-    //AGREGAR LOS CLOCKS PARA MEDIR TIEMPO
+    //*/
     std::cout << "Resolviendo con Fuerza Bruta" << std::endl;
 
     //auto ahora = std::chrono::_V2::high_resolution_clock::now();
@@ -343,9 +344,11 @@ int main()
 
     auto duracion1 = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
 
+
     std::cout << "El Algoritmo de Fuerza Bruta tardo: " << duracion1.count() << " milisegundos" << std::endl;
 
     std::cout << "-------------------------------------------------------" << std::endl;
+    //*/
 
     std::cout << "Resolviendo con Backtracking" << std::endl;
 
@@ -384,6 +387,7 @@ int main()
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoPDBU << std::endl;
 
     auto duracion4 = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
+    //auto duracion4 = std::chrono::duration_cast<std::chrono::nanoseconds>(fin - ahora);
 
     std::cout << "El Algoritmo de Prog. Dinamica (Bottom Up) tardo: " << duracion4.count() << " milisegundos" << std::endl;
 
@@ -396,7 +400,11 @@ int main()
     //salida << entrada.second.size() << std::endl;
     //salida << entrada.first << std::endl;
     //salida << std::endl;
-    salida << entrada.second.size() << "," << entrada.first << "," << duracion1.count() << "," << duracion2.count() << "," << duracion3.count() << "," << duracion4.count() << std::endl;
+    salida << entrada.second.size() << "," << entrada.first << ",";
+    salida << duracion1.count() << ","; //<< std::endl;
+    salida << duracion2.count() << ","; //<< std::endl;
+    salida << duracion3.count() << ","; //<< std::endl;
+    salida << duracion4.count() << std::endl;
     //salida << entrada.second.size() << " " << entrada.first << " " << duracion2.count() << std::endl;
     //salida << entrada.second.size() << " " << entrada.first << " " << duracion3.count() << std::endl;
     //salida << entrada.second.size() << " " << entrada.first << " " << duracion4.count() << std::endl;
