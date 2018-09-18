@@ -1,0 +1,4 @@
+10 0
+2 3 45 6 27 0 2 3 9 2
+
+Solucion esperada: 0

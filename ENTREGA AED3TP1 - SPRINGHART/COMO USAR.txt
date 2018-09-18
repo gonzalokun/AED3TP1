@@ -1,0 +1,29 @@
+Una vez compilado, el programa se tiene que correr pasandole el nombre del archivo donde esta la entrada
+Ej:
+	>programa "archivoConEntrada.extension"
+
+y en pantalla dira el resultado de correr los algoritmos con la input
+Solo puede haber un input por archivo, en el formato indicado en el tp. si se ingresa más de un input en el archivo, el programa sólo va a leer el primero.
+
+En la carpeta Test, hay .txt que prueban las posibles respuestas, cada uno con la solucion que debería devolver el programa
+
+EL FORMATO DE OUTPUT.csv es: 
+		tamaño conjunto, 
+		valor Objetivo, 
+		tiempo algoritmo fuerza bruta,
+		tiempo algoritmo backtracking,
+		tiempo algoritmo top down,
+		tiempo algoritmo bottom up, 
+		solucion de algoritmo fuerza bruta, 
+		solucion de algoritmo backtracking, 
+		solucion de algoritmo top down, 
+		solucion de algoritmo bottom up.
+
+Los últimos 4 siempre deberían ser iguales.
+
+El OUTPUT.csv nunca va a ser sobreescrito por el programa, hay que vaciarlo manualmente.
+
+genOutput.py genera los outputs usados en los experimentos
+
+En genOutput.py, cambiar las lineas de subprocess para que el directorio donde se encuentra el programa sea el correcto,
+SE ASUME QUE EL EJECUTABLE DEL TP ESTA EN LA MISMA CARPETA DEL .py

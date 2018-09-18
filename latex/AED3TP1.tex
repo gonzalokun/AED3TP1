@@ -5,13 +5,35 @@
 \usepackage{caratula}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
-%\usepackage{algorithmicx}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{listings}
+
+\lstset{basicstyle=\fontsize{8}{6}\selectfont\ttfamily,
+    breaklines=true,
+    numbers=left,
+    showstringspaces=false,
+	literate=
+  {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+  {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+  {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+  {À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+  {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+  {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+  {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+  {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+  {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+  {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+  {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+  {€}{{\euro}}1 {£}{{\pounds}}1 {«}{{\guillemotleft}}1
+  {»}{{\guillemotright}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1
+}
 
 \begin{document}
 
 \titulo{Informe de Trabajo Pr\'actico 1}
 \subtitulo{Subset Sum Problem}
-\fecha{...}
+\fecha{Domingo 16 de Septiembre de 2018}
 \materia{Algoritmos y Estructuras de Datos III}
 \grupo{}
 \newcommand{\senial}{\textit{se\~nal}}
@@ -90,9 +112,9 @@ El algoritmo de backtracking implementado en este trabajo es el siguiente:
 \begin{algorithm}
 \begin{algorithmic}
 	\Procedure{subsetSumBacktracking}{$S$, $V$}
-		\State $ordenar(S)$
+		\State $ordenar(S)$ \Comment{Uso un ordenamiento que sea $O(n*log(n))$}
 		
-		\Return $subsetSumBacktrackingAUX(S, V, 0, 0, 0)$
+		\State \Return $subsetSumBacktrackingAUX(S, V, 0, 0, 0)$
 	\EndProcedure
 \end{algorithmic}
 \end{algorithm}
@@ -123,8 +145,11 @@ El algoritmo de backtracking implementado en este trabajo es el siguiente:
 
 El algoritmo implementado de forma recursiva aque resuelve el problema funciona de la siguiente forma, cada elemento de $S$ puede estar o no en la solución, entonces en cada recursión pido el minimo entre tomar al elemento como parte de la solucion y no tomarlo. El caso base es cuando ya no quedan elementos para tomar, en ese caso se ve si la suma da o no y se devuelve la longitud correspondiente (-1 si no da y la longitud de la solucion si da). Si se alcanza al valor objetivo después de agregar a un elemento, compara la longitud de esa solución con la que no incluyo ese elemento haciendo recursión y se queda con la menor. $minPos(a, b)$ devuelve el menor entre a y b, si uno de los dos es negativo, devuelve el otro y si los dos son negativos devuelve a uno de los dos, de esa forma si no hay solución se puede devolver $-1$.
 \\
-Este algoritmo supone que $S$ esta ordenado de forma creciente, esto es importante para poder justificar una de las podas hechas. La \textbf{poda de factibilidad} del algoritmo consiste en que, si la suma al agregar un elemento se pasa de $V$, entonces esa rama de solución nunca va a encontrar un subconjunto que lo sume, ya que al estar ordenado los elementos que siguen son mayores.
-La \textbf{poda de optimalidad} se realiza cuando el elemento que se va a agregar conjunto de solucion es el 0, como un 0 no aporta nada a la suma, se saltea y se ve directamente el elemento siguiente.
+Este algoritmo supone que $S$ esta ordenado de forma creciente, esto es importante para poder justificar una de las podas hechas.
+\\
+
+La \textbf{poda de factibilidad} del algoritmo consiste en que, si la suma al agregar un elemento se pasa de $V$, entonces esa rama de solución nunca va a encontrar un subconjunto que lo sume, ya que al estar ordenado los elementos que siguen son mayores. La \textbf{poda de optimalidad} se realiza cuando el elemento que se va a agregar conjunto de solucion es el 0, como un 0 no aporta nada a la suma, se saltea y se ve directamente el elemento siguiente.
+\\
 
 Para calcular la complejidad hay que ver como se van abriendo las llamadas recursivas, si ignoramos las podas (que no afectan este cálculo) podemos ver que en cada recursión se van realizando dos llamadas a la función, una si se incluye al elemento actual en la solución y una si no. De esa forma la cantidad de llamadas va aumentando de forma exponencial a medida que sigue la función, hasta que se terminen los elementos del conjunto. Si graficamos como se va ejecutando la función se va a formar un árbol completo (aunque varias hojas tendrían lo mismo). Por lo que la función se ejecuta $2^{|S|} = 2^n$ veces.
 Por lo tanto la complejidad de este algoritmo es $O(|S|*log(|S|) + 2^|S|) = O(n*log(n) + 2^n) \in O(n*2^n)$.
@@ -252,7 +277,7 @@ El algoritmo es el siguiente:
 \end{algorithmic}
 \end{algorithm}
 
-En este algoritmo la matriz se interpreta igual que en el anterior, las columnas son posibles valores objetivos y las filas son la cantidad de elementos (tomados desde el primero) del conjunto, el valor de toda la columna $0$ va a ser $0$, ya que dado cualquier conjunto $S$, el conjunto vacío es un subconjunto de $S$ y loa suma de sus elementos es $0$. En la primera fila todos las columnas van a tener $-1$ cuando el número de la columna no sea igual al primer elemento de $S$ y $1$ cuando sea. Basándonos en la recursión podemos ver que tomando un elemento, la menor cardinal de un subconjunto que suma $V$ es la mínima cardinal entre el conjunto que suma $V$ y no incluya al elemento actual y la cardinal del conjunto que suma $V$ e incluye el elemento actual de $S$. Entonces para una celda ($i$, $j$) la cardinal va a ser el mínimo entre ($i-1$, $j$) y
+En este algoritmo la matriz se interpreta igual que en el anterior, las columnas son posibles valores objetivos y las filas son la cantidad de elementos (tomados desde el primero) del conjunto, el valor de toda la columna $0$ va a ser $0$, ya que dado cualquier conjunto $S$, el conjunto vacío es un subconjunto de $S$ y la suma de sus elementos es $0$. En la primera fila todos las columnas van a tener $-1$ cuando el número de la columna no sea igual al primer elemento de $S$ y $1$ cuando sea. Basándonos en la recursión podemos ver que tomando un elemento, la menor cardinal de un subconjunto que suma $V$ es la mínima cardinal entre el conjunto que suma $V$ y no incluya al elemento actual y la cardinal del conjunto que suma $V$ e incluye el elemento actual de $S$. Entonces para una celda ($i$, $j$) la cardinal va a ser el mínimo entre ($i-1$, $j$) y
 ($i-1$, $j-S[i]$), si ambos son negativos entonces el cardinal es $-1$. Si el cardinal mínimo es el de ($i-1$, $j-S[i]$), entonces hay que sumarle $1$ para que tome en cuenta la inclusión del elemento $S[i]$ en la solución. Entonces la solución al problema se encontraría en la celda ($|S|-1$, $V$).
 \\
 La complejidad de este algoritmo es simple de calcular, podemos ignorar la complejidad de los dos primeros ciclos ya que la que realmente pesa es la del tercero, que se ejecuta $|S|-1 * V$ veces, lo que significa que es $O(|S|*V)$.
@@ -262,10 +287,48 @@ Entonces el algoritmo es $O(|S|*V) = O(n*V)$.
 \section{Experimentos}
 Como fue mencionado anteriormente nos interesa saber cuál de los algoritmos es más eficiente para resolver el \textit{Subset Sum Problem}, por los cálculos de complejidad anteriormente realizados podemos intuir que los algoritmos de programación dinámica son los que van a tener ventaja sobre la fuerza bruta y el backtracking.
 \\
+Para poder apreciar las diferencias entre ellos, se diseño un caso de test que prueba el tiempo que tardan los algoritmos en su peor caso, para la Fuerza Bruta no existe realmente un peor caso ya que siempre se fija en todos los subconjuntos posibles, al algoritmo Bottom Up le sucede algo parecido, como siempre genera toda la tabla, no hay un valor de entrada que le haga hacer más o menos pasos, sin embargo es afectado junto con el Top Down por el valor de $V$, entonces el peor caso se basó en el de Backtracking y el Top Down. 
+\\
+El peor caso de Backtracking consiste en evitar las podas que lo optimizan, por ende las entradas que van a dar el peor caso son: un conjunto tal que ningun elemento sea 0 y un valor objetivo tal que sea mayor que la suma de todos los elementos del conjunto. De esa forma se evitan las podas y el algoritmo tiene que calcular todas las ramas.
+\\
+El peor caso del algoritmo Top Down seria un conjunto cuyos elementos sean todos 1, ya que provocaría que la recursión tome más pasos para llegar a los casos base, y por ende tome más tiempo.
+\\
 
+Utilizando un script hecho en python se fueron creando inputs que cumplen esta característica, que después procesó una versión modificada del programa del TP para generar outputs, que se leen desde jupyter notebooks para poder generar los gráficos.
+\\
+Despúes de realizar varios experimentos surgió un problema, aunque se construyo un peor caso para podes comparar a los algoritmos, los de programación dinámica resultaron ser mucho más eficientes que lo esperado. En el siguiente gráfico se aumento el tamaño del conjunto dejando a $V$ fija en un número arbitrariamente alto:
+\\
+\begin{center}
+	\includegraphics[width=.8\linewidth]{G3.pdf}
+\end{center}
 
-\section{Conclusiones}
-Acá van las conclusiones (si las hay)
+Si bien este gráfico no nos dice mucho de como son los dos algoritmos de programación dinámica, nos ayuda a ver que aún tomando datos de $V$ grandes son mejores que la Fuerza Bruta y Backtracking. El tamaño del conjunto no llega a crecer mucho ya que como la Fuerza Bruta pasa por todos los subconjuntos de partes de $S$ la cantidad de pasos que tiene que realizar crece demasiado rápido, al punto de que no alcanza la memoria del sistema para poder calcularlos, esto no pasa de la misma forma con los otros algoritmos.
+\\
+Ya que los algoritmos Top Down y Bottom Up resultaron mejores, nos interesaría saber cuál de ellos es mejor, para eso se hicieron dos experimentos, uno donde se altera la cantidad de elementos del conjunto y otro donde se altera el valor objetivo del problema.
+\\
+El primer experimento produjo el suguiente gráfico:
+
+\begin{center}
+	\includegraphics[width=.8\linewidth]{G2.pdf}
+\end{center}
+
+Y el segundo produjo este:
+
+\begin{center}
+	\includegraphics[width=.8\linewidth]{G4.pdf}
+\end{center}
+
+De estos gráficos podemos ver que a la larga el algoritmo Bottom Up es el que termina resolviendo el problema en menos tiempo, pero lo que es más interesante es que los dos algoritmos tienden a tardar más a media que aumenta el valór $V$ que si aumenta la cantidad de elementos en el conjunto. En el caso del algoritmo Top Down, en el primér gráfico se ve que llega a tardar como mucho unos $4.5$ segundos mientras que en el segundo se ve que se pasa de los $5$ segundos en una ocasión.
+\\
+Esto puede estar sucediendo porque el algoritmo Top Down depende del valor $V$ para ir llegando a los casos base, mientras que el Bottom Up llena su matriz siempre al mismo paso, aunque esto le saque ventaja cuando $V$ no es muy grande.
+
+Luego de la experimentación podemos concluir que el algoritmo más óptimo para resolver el problema de Subset Sum en general es el Bottom Up, aunque los otros métodos podrían ser utilizados si se tiene conocimiento sobre cuales van a ser los datos de entrada, por ejemplo si se supiera que el conjunto va a tener muchos 0 el algoritmo de Backtracking podría ser utilizado y aún se obtendrian resultados en tiempos rápidos.
+
+%\section{Conclusiones}
+%Acá van las conclusiones (si las hay)
+
 \section{Código}
-Acá va el code
+
+\lstinputlisting[language=C++]{main.cpp}
+
 \end{document}
