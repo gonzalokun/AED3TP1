@@ -230,8 +230,12 @@ Entonces el algoritmo queda asi:
 %Acá va la justificación de la complejidad
 \pagebreak
 
+%Vamos a Explicarlo con la matriz
 Este algoritmo llega a la solución usando la misma idea del de que el de backtracking, tomando el minimo entre la solución que incluye el elemento actual y el que no, así se van partiendo los subproblemas hasta llegar a los casos base, que son cuando se pasen las dimensiones de la matriz que resulta en un $-1$ y cuando se llega a la columna $0$ donde se devuelve 0.
-También se va ejecutando de forma parecida al de backtracking, se van haciendo dos llamados a funciones en cada recursión, pero estas recursiones sólo se realizan una vez, si en la matriz hay un $-10$ entonces ese valor no fue computado y se calcula. Pero una vez calculado, se guarda y se se pide entonces se accede directamente al guardado. También la recursión se realiza sobre el tamaño de la matriz, por lo que esta acotada por $O(|S|*V) = O(n*V)$.
+También se va ejecutando de forma parecida al de backtracking, se van haciendo dos llamados a funciones en cada recursión, pero estas recursiones sólo se realizan una vez, si en la matriz hay un $-10$ entonces ese valor no fue computado y se calcula. Pero una vez calculado, se guarda y se se pide entonces se accede directamente al guardado. 
+%También la recursión se realiza sobre el tamaño de la matriz, por lo que esta acotada por $O(|S|*V) = O(n*V)$.
+
+Veamos que la complejidad del algoritmo es la correcta, hay un ciclo que crea la matriz donde se van a guardar los datos, este ciclo cuesta $O(N*V)$.
 %EXPLICAR MEJOR ESTOOOOOOOO
 
 \subsection{Programaci\'on Din\'amica Bottom Up}
@@ -329,6 +333,6 @@ Luego de la experimentación podemos concluir que el algoritmo más óptimo para
 
 \section{Código}
 
-\lstinputlisting[language=C++]{main.cpp}
+%\lstinputlisting[language=C++]{main.cpp}
 
 \end{document}
