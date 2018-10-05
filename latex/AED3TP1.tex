@@ -235,8 +235,17 @@ Este algoritmo llega a la solución usando la misma idea del de que el de backtr
 También se va ejecutando de forma parecida al de backtracking, se van haciendo dos llamados a funciones en cada recursión, pero estas recursiones sólo se realizan una vez, si en la matriz hay un $-10$ entonces ese valor no fue computado y se calcula. Pero una vez calculado, se guarda y se se pide entonces se accede directamente al guardado. 
 %También la recursión se realiza sobre el tamaño de la matriz, por lo que esta acotada por $O(|S|*V) = O(n*V)$.
 
-Veamos que la complejidad del algoritmo es la correcta, hay un ciclo que crea la matriz donde se van a guardar los datos, este ciclo cuesta $O(N*V)$.
-%EXPLICAR MEJOR ESTOOOOOOOO
+Veamos que la complejidad del algoritmo es la correcta, hay un ciclo que crea la matriz donde se van a guardar los datos, este ciclo cuesta $O(N*V)$. La función recursiva que calcula la solución lo hace de la siguiente manera, en cada ejecución que no llegue al caso base, se realizan dos llamadas recursivas para calcular los distintos posibles resultados, estas llamadas van tomando parámetros que causan que la matriz utilizada para guardar los datos se vaya cargando, si bien el algoritmo pasa por todas las filas de la matriz, no necesariamente pasa por todas las columnas de cada fila. La llamada recursiva que incluye al elemento actual en la solución le resta al valor objetivo ese elemento, ese cambio en el valor objetivo va a provocar un salto hacia otra columna de la matriz en la rama, efectivamente salteando la carga de celdas.
+
+%Meter acá un dibujo o algo asi !!!!!!!!!!!!!!!!!!!!
+
+El salto más corto que puede hacer el algoritmo es una unidad, por lo que si en todas las ramas donde el algoritmo salta, solo salta 1 vez entonces se calcula a lo sumo la mitad de la matriz, ya que en cada llamada recursiva se calcula la celda de arriba y la de arriba a la izquierda de la actual, y no se calculan las celdas que esten directamente a la izquierda o a la derecha de la actual.
+
+%Meter acá un dibujo de la matriz cargada a la mitad.
+
+Como el algoritmo para al pasarse de las dimensiones de la matriz, la función recursiva es $O(N*V)$, ya que ese es el tamaño de la matriz que el algoritmo va llenando.
+
+Entonces el algoritmo es $O(N*V)$
 
 \subsection{Programaci\'on Din\'amica Bottom Up}
 
@@ -288,7 +297,17 @@ La complejidad de este algoritmo es simple de calcular, podemos ignorar la compl
 \\
 Entonces el algoritmo es $O(|S|*V) = O(n*V)$.
 
+\pagebreak
+
 \section{Experimentos}
+%CAMBIAAAAAAAAAR ESTOOOOOOOOOO
+%FALTA (En esta sección):
+%	Hacer subsecciones para cada exp.
+%	Experimentos para probar que la complejidad da lo que dije
+%	Experimentos que muestren en qué casos sirve cada algoritmo
+%	Sacar el grafico ese donde puse a todas juntas, comparar quiza a backtracking y a Brute Force pero a las 4 
+%   juntas no porque no hay manera.
+
 Como fue mencionado anteriormente nos interesa saber cuál de los algoritmos es más eficiente para resolver el \textit{Subset Sum Problem}, por los cálculos de complejidad anteriormente realizados podemos intuir que los algoritmos de programación dinámica son los que van a tener ventaja sobre la fuerza bruta y el backtracking.
 \\
 Para poder apreciar las diferencias entre ellos, se diseño un caso de test que prueba el tiempo que tardan los algoritmos en su peor caso, para la Fuerza Bruta no existe realmente un peor caso ya que siempre se fija en todos los subconjuntos posibles, al algoritmo Bottom Up le sucede algo parecido, como siempre genera toda la tabla, no hay un valor de entrada que le haga hacer más o menos pasos, sin embargo es afectado junto con el Top Down por el valor de $V$, entonces el peor caso se basó en el de Backtracking y el Top Down. 
@@ -331,7 +350,7 @@ Luego de la experimentación podemos concluir que el algoritmo más óptimo para
 %\section{Conclusiones}
 %Acá van las conclusiones (si las hay)
 
-\section{Código}
+%\section{Código}
 
 %\lstinputlisting[language=C++]{main.cpp}
 
