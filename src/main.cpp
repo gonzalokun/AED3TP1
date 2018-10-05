@@ -305,11 +305,12 @@ int main(int argc, char** argv)
     salida << duracion1.count() << ",";
     salida << duracion2.count() << ",";
     salida << duracion3.count() << ",";
-    salida << duracion4.count() << ",";
-    salida << resultadoFB << ",";
-    salida << resultadoBT << ",";
-    salida << resultadoPDTD << ",";
-    salida << resultadoPDTD << std::endl;
+    salida << duracion4.count(); //<< ",";
+    //salida << resultadoFB << ",";
+    //salida << resultadoBT << ",";
+    //salida << resultadoPDTD << ",";
+    //salida << resultadoPDTD;
+    salida << std::endl;
 
     salida.close();
     return 0;

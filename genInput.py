@@ -1,23 +1,45 @@
-#Generamos un input, lo pasamos al programa y se tiene que poner en el output
-
+#Generamos un input, lo pasamos al programa y se tiene que generar un output
 import subprocess
 import random
 
-def genInput():
+#Crea inputs y genera un Output, este se utiliza para crear tests con V fijo
+#Inserta elemAInsertar en el conjunto, tiene que ser un numero
+def generarOutputsExp1(valorObjetivo, tamConjInicial, tamConjFinal, elemAInstertar, paso=1):
     #Genero un input
-    valorObjetivo = 20
 
-    for n in range(5, 26):
+    for n in range(tamConjInicial, tamConjFinal + 1, paso):
         archivo = open("input.txt", "w")
         archivo.write(str(n) + " " + str(valorObjetivo) + "\n")
-        #print("VALOR N:" + str(n))
+
         for j in range(n):
-            #print("VALOR J: " + str(j))
-            archivo.write(str(random.randint(0, 50)))
-            if j != n-1:
-                archivo.write(" ")
+            archivo.write(elemAInstertar)
+            archivo.write(" ")
 
-        #Corre el programa del TP
-        subprocess.run("E:/Proyectos/AED3TP1/bin/Debug/AED3TP1(CodeBlocks).exe")
+        archivo.close()
 
-genInput()
+        #CAMBIAR "AED3TP1(CodeBlocks).exe" AL NOMBRE DEL PROGRAMA COMPILADO
+        subprocess.run("AED3TP1(CodeBlocks).exe input.txt")
+
+#Crea inputs y genera un Output, este se utiliza para crear tests con n fijo
+#Inserta elemAInsertar en el conjunto
+def generarOutputsExp2(TamConjunto, valorObjetivoInicial, valorObjetivoFinal, elemAInstertar, paso=1):
+
+    for n in range(valorObjetivoInicial, valorObjetivoFinal + 1, paso):
+        archivo = open("input.txt", "w")
+        archivo.write(str(TamConjunto) + " " + str(n) + "\n")
+
+        for j in range(TamConjunto):
+            archivo.write(elemAInstertar)
+            archivo.write(" ")
+
+        archivo.close()
+
+        #CAMBIAR "AED3TP1(CodeBlocks).exe" AL NOMBRE DEL PROGRAMA COMPILADO
+        subprocess.run("AED3TP1(CodeBlocks).exe input.txt")
+
+#generarOutputsExp1(valorObjetivo, tamConjInicial, tamConjFinal, elemAInsertar, paso=1)
+
+#Ejemplo de uso
+#generarOutputsExp1(6, 10, 10, "1", 1)
+
+#generarOutputsExp2(TamConjunto, valorObjetivoInicial, valorObjetivoFinal, elemAInsertar, paso=1)

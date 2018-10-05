@@ -310,23 +310,31 @@ Entonces el algoritmo es $O(|S|*V) = O(n*V)$.
 
 Como fue mencionado anteriormente nos interesa saber cuál de los algoritmos es más eficiente para resolver el \textit{Subset Sum Problem}, por los cálculos de complejidad anteriormente realizados podemos intuir que los algoritmos de programación dinámica son los que van a tener ventaja sobre la fuerza bruta y el backtracking.
 \\
-Para poder apreciar las diferencias entre ellos, se diseño un caso de test que prueba el tiempo que tardan los algoritmos en su peor caso, para la Fuerza Bruta no existe realmente un peor caso ya que siempre se fija en todos los subconjuntos posibles, al algoritmo Bottom Up le sucede algo parecido, como siempre genera toda la tabla, no hay un valor de entrada que le haga hacer más o menos pasos, sin embargo es afectado junto con el Top Down por el valor de $V$, entonces el peor caso se basó en el de Backtracking y el Top Down. 
-\\
-El peor caso de Backtracking consiste en evitar las podas que lo optimizan, por ende las entradas que van a dar el peor caso son: un conjunto tal que ningun elemento sea 0 y un valor objetivo tal que sea mayor que la suma de todos los elementos del conjunto. De esa forma se evitan las podas y el algoritmo tiene que calcular todas las ramas.
-\\
-El peor caso del algoritmo Top Down seria un conjunto cuyos elementos sean todos 1, ya que provocaría que la recursión tome más pasos para llegar a los casos base, y por ende tome más tiempo.
-\\
+%Para poder apreciar las diferencias entre ellos, se diseño un caso de test que prueba el tiempo que tardan los algoritmos en su peor caso, para la Fuerza Bruta no existe realmente un peor caso ya que siempre se fija en todos los subconjuntos posibles, al algoritmo Bottom Up le sucede algo parecido, como siempre genera toda la tabla, no hay un valor de entrada que le haga hacer más o menos pasos, sin embargo es afectado junto con el Top Down por el valor de $V$, entonces el peor caso se basó en el de Backtracking y el Top Down. 
+%\\
+%El peor caso de Backtracking consiste en evitar las podas que lo optimizan, por ende las entradas que van a dar el peor caso son: un conjunto tal que ningun elemento sea 0 y un valor objetivo tal que sea mayor que la suma de todos los elementos del conjunto. De esa forma se evitan las podas y el algoritmo tiene que calcular todas las ramas.
+%\\
+%El peor caso del algoritmo Top Down seria un conjunto cuyos elementos sean todos 1, ya que provocaría que la recursión tome más pasos para llegar a los casos base, y por ende tome más tiempo.
+%\\
+%Utilizando un script hecho en python se fueron creando inputs que cumplen esta característica, que después procesó una versión modificada del programa del TP para generar outputs, que se leen desde jupyter notebooks para poder generar los gráficos.
+%\\
+%Despúes de realizar varios experimentos surgió un problema, aunque se construyo un peor caso para podes comparar a los algoritmos, los de programación dinámica resultaron ser mucho más eficientes que lo esperado. En el siguiente gráfico se aumento el tamaño del conjunto dejando a $V$ fija en un número arbitrariamente alto:
+%\\
+%\begin{center}
+%	\includegraphics[width=.8\linewidth]{G3.pdf}
+%\end{center}
+%
+%Si bien este gráfico no nos dice mucho de como son los dos algoritmos de programación dinámica, nos ayuda a ver que aún tomando datos de $V$ grandes son mejores que la Fuerza Bruta y Backtracking. El tamaño del conjunto no llega a crecer mucho ya que como la Fuerza Bruta pasa por todos los subconjuntos de partes de $S$ la cantidad de pasos que tiene que realizar crece demasiado rápido, al punto de que no alcanza la memoria del sistema para poder calcularlos, esto no pasa de la misma forma con los otros algoritmos.
+%\\
 
-Utilizando un script hecho en python se fueron creando inputs que cumplen esta característica, que después procesó una versión modificada del programa del TP para generar outputs, que se leen desde jupyter notebooks para poder generar los gráficos.
-\\
-Despúes de realizar varios experimentos surgió un problema, aunque se construyo un peor caso para podes comparar a los algoritmos, los de programación dinámica resultaron ser mucho más eficientes que lo esperado. En el siguiente gráfico se aumento el tamaño del conjunto dejando a $V$ fija en un número arbitrariamente alto:
-\\
-\begin{center}
-	\includegraphics[width=.8\linewidth]{G3.pdf}
-\end{center}
+\subsection{Experimentos sobre complejidad}
+Antes de comparar los algoritmos vamos a ver que las complejidades calculadas para cada uno sean las correctas, si tomamos los resultados en tiempo que nos va dando cada algoritmo y los dividimos por la función que representa la complejidad de cada uno, el resultado debería dar acercase a $1$. Si graficamos esto entonces deberiamos obtener una linea parecida a una función constante.
 
-Si bien este gráfico no nos dice mucho de como son los dos algoritmos de programación dinámica, nos ayuda a ver que aún tomando datos de $V$ grandes son mejores que la Fuerza Bruta y Backtracking. El tamaño del conjunto no llega a crecer mucho ya que como la Fuerza Bruta pasa por todos los subconjuntos de partes de $S$ la cantidad de pasos que tiene que realizar crece demasiado rápido, al punto de que no alcanza la memoria del sistema para poder calcularlos, esto no pasa de la misma forma con los otros algoritmos.
-\\
+\subsection{Backtracking vs Fuerza Bruta}
+
+\subsection{Comparación entre algoritmos de programación dinámica}
+
+%REESCRIBIR UN TOQUE ESTOOOOO
 Ya que los algoritmos Top Down y Bottom Up resultaron mejores, nos interesaría saber cuál de ellos es mejor, para eso se hicieron dos experimentos, uno donde se altera la cantidad de elementos del conjunto y otro donde se altera el valor objetivo del problema.
 \\
 El primer experimento produjo el suguiente gráfico:
@@ -346,6 +354,9 @@ De estos gráficos podemos ver que a la larga el algoritmo Bottom Up es el que t
 Esto puede estar sucediendo porque el algoritmo Top Down depende del valor $V$ para ir llegando a los casos base, mientras que el Bottom Up llena su matriz siempre al mismo paso, aunque esto le saque ventaja cuando $V$ no es muy grande.
 
 Luego de la experimentación podemos concluir que el algoritmo más óptimo para resolver el problema de Subset Sum en general es el Bottom Up, aunque los otros métodos podrían ser utilizados si se tiene conocimiento sobre cuales van a ser los datos de entrada, por ejemplo si se supiera que el conjunto va a tener muchos 0 el algoritmo de Backtracking podría ser utilizado y aún se obtendrian resultados en tiempos rápidos.
+
+\subsection{Casos de uso para los algoritmos}
+
 
 %\section{Conclusiones}
 %Acá van las conclusiones (si las hay)
