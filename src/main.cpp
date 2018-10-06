@@ -5,7 +5,7 @@
 #include <fstream>
 #include <chrono>
 #include <cstring>
-#define CANTREP 3
+#define CANTREP 5
 
 //Todo el código se encuentra en el mismo archivo
 //para facilitar lectura/localizacion del código
@@ -288,35 +288,78 @@ int main(int argc, char** argv)
     std::cout << "-------------------------------------------------------" << std::endl;
     std::cout << "Resolviendo con Backtracking" << std::endl;
 
-    ahora = std::chrono::_V2::steady_clock::now();
-    resultadoBT = subsetSumBacktracking(entrada.second, entrada.first);
-    fin = std::chrono::_V2::steady_clock::now();
+    //ahora = std::chrono::_V2::steady_clock::now();
+    //resultadoBT = subsetSumBacktracking(entrada.second, entrada.first);
+    //fin = std::chrono::_V2::steady_clock::now();
+    auto duracion2 = duracion1;
+    duracion2 = 0;
+
+    for(int rep = 0; rep < CANTREP; rep++){
+        ahora = std::chrono::_V2::steady_clock::now();
+        resultadoBT = subsetSumBacktracking(entrada.second, entrada.first);
+        fin = std::chrono::_V2::steady_clock::now();
+
+        auto temp = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
+
+        duracion2 += temp.count();
+    }
+
+    duracion2 /= CANTREP;
 
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoBT << std::endl;
-    auto duracion2 = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
-    std::cout << "El Algoritmo de Backtracking tardo: " << duracion2.count() << " milisegundos" << std::endl;
+    std::cout << "El Algoritmo de Backtracking tardo: " << duracion2 << " milisegundos" << std::endl;
 
     std::cout << "-------------------------------------------------------" << std::endl;
     std::cout << "Resolviendo con Programancion Dinamica (Algoritmo Top Down)" << std::endl;
 
-    ahora = std::chrono::_V2::steady_clock::now();
-    resultadoPDTD = subsetSumPDTD(entrada.second, entrada.first);
-    fin = std::chrono::_V2::steady_clock::now();
+    //ahora = std::chrono::_V2::steady_clock::now();
+    //resultadoPDTD = subsetSumPDTD(entrada.second, entrada.first);
+    //fin = std::chrono::_V2::steady_clock::now();
+
+    auto duracion3 = duracion1;
+    duracion3 = 0;
+
+    for(int rep = 0; rep < CANTREP; rep++){
+        ahora = std::chrono::_V2::steady_clock::now();
+        resultadoPDTD = subsetSumPDTD(entrada.second, entrada.first);
+        fin = std::chrono::_V2::steady_clock::now();
+
+        auto temp = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
+
+        duracion3 += temp.count();
+    }
+
+    duracion3 /= CANTREP;
 
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoPDTD << std::endl;
-    auto duracion3 = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
-    std::cout << "El Algoritmo de Prog. Dinamica (Top Down) tardo: " << duracion3.count() << " milisegundos" << std::endl;
+    //auto duracion3 = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
+    std::cout << "El Algoritmo de Prog. Dinamica (Top Down) tardo: " << duracion3 << " milisegundos" << std::endl;
 
     std::cout << "-------------------------------------------------------" << std::endl;
     std::cout << "Resolviendo con Programancion Dinamica (Algoritmo Bottom Up)" << std::endl;
 
-    ahora = std::chrono::_V2::steady_clock::now();
-    resultadoPDBU = subsetSumPDBU(entrada.second, entrada.first);
-    fin = std::chrono::_V2::steady_clock::now();
+    //ahora = std::chrono::_V2::steady_clock::now();
+    //resultadoPDBU = subsetSumPDBU(entrada.second, entrada.first);
+    //fin = std::chrono::_V2::steady_clock::now();
+
+    auto duracion4 = duracion1;
+    duracion4 = 0;
+
+    for(int rep = 0; rep < CANTREP; rep++){
+        ahora = std::chrono::_V2::steady_clock::now();
+        resultadoPDBU = subsetSumPDBU(entrada.second, entrada.first);
+        fin = std::chrono::_V2::steady_clock::now();
+
+        auto temp = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
+
+        duracion4 += temp.count();
+    }
+
+    duracion4 /= CANTREP;
 
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoPDBU << std::endl;
-    auto duracion4 = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
-    std::cout << "El Algoritmo de Prog. Dinamica (Bottom Up) tardo: " << duracion4.count() << " milisegundos" << std::endl;
+    //auto duracion4 = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
+    std::cout << "El Algoritmo de Prog. Dinamica (Bottom Up) tardo: " << duracion4 << " milisegundos" << std::endl;
     std::cout << "-------------------------------------------------------" << std::endl;
 
     //Escritura de output en archivo
@@ -324,9 +367,9 @@ int main(int argc, char** argv)
 
     salida << entrada.second.size() << "," << entrada.first << ",";
     salida << duracion1 << ",";
-    salida << duracion2.count() << ",";
-    salida << duracion3.count() << ",";
-    salida << duracion4.count(); //<< ",";
+    salida << duracion2 << ",";
+    salida << duracion3 << ",";
+    salida << duracion4; //<< ",";
     //salida << resultadoFB << ",";
     //salida << resultadoBT << ",";
     //salida << resultadoPDTD << ",";

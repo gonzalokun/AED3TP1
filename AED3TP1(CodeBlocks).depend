@@ -1,11 +1,12 @@
 # depslib dependency file v1.0
-1537034667 source:e:\proyectos\aed3tp1\src\main.cpp
+1538864648 source:e:\proyectos\aed3tp1\src\main.cpp
 	<iostream>
 	<vector>
 	<math.h>
 	<algorithm>
 	<fstream>
 	<chrono>
+	<cstring>
 
 1537145982 source:c:\proyectos\aed3tp1\src\main.cpp
 	<iostream>
