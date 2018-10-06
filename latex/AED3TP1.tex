@@ -104,7 +104,7 @@ El algoritmo ejecuta un ciclo que incrementa un contador (que usamos para saber 
 Entonces la complejidad del algoritmo es $O(|S| * 2^|S|) = O(n * 2^n)$.
 
 \subsection{Backtracking}
-El Backtracking es un algoritmo que se utiliza para encontrar todas o algunas de las soluciones de alg\'un problema, se basa en ir armando la soluci\'on correcta al problema desechando las que no pueden ser correctas a medida que se ejecuta, lo que se conoce como poda, existen podas de \textbf{factibilidad}, que son las que se realizan cuando se sabe que la rama de soluciones no puede llegar al resultado y podas de \textbf{optimalidad} que se realizan para optimizar la solución en ciertos casos.
+El Backtracking es un algoritmo que se utiliza para encontrar todas o algunas de las soluciones de alg\'un problema, se basa en ir armando la soluci\'on correcta al problema desechando las que no pueden ser correctas a medida que se ejecuta, lo que se conoce como poda, existen podas de \textbf{factibilidad}, que son las que se realizan cuando se sabe que la rama de soluciones no puede llegar al resultado y podas de \textbf{optimalidad} que se realiza para eliminar ramas que si bien llegan a una solución, se sabe que no es la optima.
 Esa característica de desechar soluciones que no pueden ser correctas lo hace superior a probar todas las posibles.
 \\
 El algoritmo de backtracking implementado en este trabajo es el siguiente:
@@ -121,15 +121,21 @@ El algoritmo de backtracking implementado en este trabajo es el siguiente:
 
 \begin{algorithm}
 \begin{algorithmic}
-	\Procedure{subsetSumBacktrackingAUX}{$S$, $V$, $inicio$, $longActual$, $sumActual$}
+	\Procedure{subsetSumBacktrackingAUX}{$S$, $V$, $inicio$, $longActual$, $sumActual$, $tamMejorConj$}
 		\If{$inicio == |S|$}
 			\If{$sumActual == V$}
+				\State $tamMejorConj \gets minPos(tamMejorConj, longActual)$
 				\State \Return $longActual$
 			\Else
 				\State \Return $-1$
 			\EndIf
 		\Else
+			\If{$not (tamMejorConj == -1) \land longActual >= tamMejorConjunto$}
+				\State \Return $-1$
+			\EndIf
+			
 			\If{$sumActual == V$}
+				\State $tamMejorConj \gets minPos(tamMejorConj, longActual)$
 				\State \Return $minPos(longActual,subsetSumBacktrackingAUX(S,V,inicio,longActual-1,sumActual-S[inicio-1]))$
 			\ElsIf{$sumActual > V$}
 				\State \Return $-1$
@@ -145,10 +151,11 @@ El algoritmo de backtracking implementado en este trabajo es el siguiente:
 
 El algoritmo implementado de forma recursiva aque resuelve el problema funciona de la siguiente forma, cada elemento de $S$ puede estar o no en la solución, entonces en cada recursión pido el minimo entre tomar al elemento como parte de la solucion y no tomarlo. El caso base es cuando ya no quedan elementos para tomar, en ese caso se ve si la suma da o no y se devuelve la longitud correspondiente (-1 si no da y la longitud de la solucion si da). Si se alcanza al valor objetivo después de agregar a un elemento, compara la longitud de esa solución con la que no incluyo ese elemento haciendo recursión y se queda con la menor. $minPos(a, b)$ devuelve el menor entre a y b, si uno de los dos es negativo, devuelve el otro y si los dos son negativos devuelve a uno de los dos, de esa forma si no hay solución se puede devolver $-1$.
 \\
-Este algoritmo supone que $S$ esta ordenado de forma creciente, esto es importante para poder justificar una de las podas hechas.
+Este algoritmo supone que $S$ esta ordenado de forma creciente, esto es importante para poder justificar una de las podas hechas. También supone que $tamMejorConj$ se pasa por referencia.
 \\
 
-La \textbf{poda de factibilidad} del algoritmo consiste en que, si la suma al agregar un elemento se pasa de $V$, entonces esa rama de solución nunca va a encontrar un subconjunto que lo sume, ya que al estar ordenado los elementos que siguen son mayores. La \textbf{poda de optimalidad} se realiza cuando el elemento que se va a agregar conjunto de solucion es el 0, como un 0 no aporta nada a la suma, se saltea y se ve directamente el elemento siguiente.
+La \textbf{poda de factibilidad} del algoritmo consiste en que, si la suma al agregar un elemento se pasa de $V$, entonces esa rama de solución nunca va a encontrar un subconjunto que lo sume, ya que al estar ordenado los elementos que siguen son mayores. El algoritmo posee dos \textbf{podas de optimalidad}, una se realiza cuando el elemento que se va a agregar conjunto de solucion es el 0, como un 0 no aporta nada a la suma, se saltea y se ve directamente el elemento siguiente.
+La segunda poda es la siguiente, al encontrar una solución al problema, se guarda la longitud del subconjunto solución como la mejor solución hasta el momento, si en otra rama de ejecución veo que la longitud del candidato a solución es más larga o de igual tamaño que la guardada, entonces se que por esa rama nunca voy a encontrar una solución más optima, entonces corto esa rama.
 \\
 
 Para calcular la complejidad hay que ver como se van abriendo las llamadas recursivas, si ignoramos las podas (que no afectan este cálculo) podemos ver que en cada recursión se van realizando dos llamadas a la función, una si se incluye al elemento actual en la solución y una si no. De esa forma la cantidad de llamadas va aumentando de forma exponencial a medida que sigue la función, hasta que se terminen los elementos del conjunto. Si graficamos como se va ejecutando la función se va a formar un árbol completo (aunque varias hojas tendrían lo mismo). Por lo que la función se ejecuta $2^{|S|} = 2^n$ veces.
@@ -160,7 +167,7 @@ Este tipo de programación dinámica se parece mucho a como uno lo resolveria co
 \\
 Para este algoritmo la tabla va a representar lo siguiente, las columas de la tabla representan un posible valor objetivo, mientras que las filas representan la cantidad de elementos usados de $S$ (empezando desde el primero), y en cada celda se guarda el cardinal del conjunto más chico que forma el valor objetivo que corresponde a la columna, así por ejemplo la posición [3][6] tiene guardado el cardinal de los subconjuntos más chico que usa los primeros 3 elementos de $S$ y suma $6$, en caso de no haber subconjunto que sume el valor de la columna, en la celda habrá un -1.
 \\
-Entonces el algoritmo queda asi:
+Entonces el algoritmo queda así:
 
 \begin{algorithm}
 \begin{algorithmic}
@@ -235,17 +242,21 @@ Este algoritmo llega a la solución usando la misma idea del de que el de backtr
 También se va ejecutando de forma parecida al de backtracking, se van haciendo dos llamados a funciones en cada recursión, pero estas recursiones sólo se realizan una vez, si en la matriz hay un $-10$ entonces ese valor no fue computado y se calcula. Pero una vez calculado, se guarda y se se pide entonces se accede directamente al guardado. 
 %También la recursión se realiza sobre el tamaño de la matriz, por lo que esta acotada por $O(|S|*V) = O(n*V)$.
 
-Veamos que la complejidad del algoritmo es la correcta, hay un ciclo que crea la matriz donde se van a guardar los datos, este ciclo cuesta $O(N*V)$. La función recursiva que calcula la solución lo hace de la siguiente manera, en cada ejecución que no llegue al caso base, se realizan dos llamadas recursivas para calcular los distintos posibles resultados, estas llamadas van tomando parámetros que causan que la matriz utilizada para guardar los datos se vaya cargando, si bien el algoritmo pasa por todas las filas de la matriz, no necesariamente pasa por todas las columnas de cada fila. La llamada recursiva que incluye al elemento actual en la solución le resta al valor objetivo ese elemento, ese cambio en el valor objetivo va a provocar un salto hacia otra columna de la matriz en la rama, efectivamente salteando la carga de celdas.
+%Veamos que la complejidad del algoritmo es la correcta, hay un ciclo que crea la matriz donde se van a guardar los datos, este ciclo cuesta $O(N*V)$. La función recursiva que calcula la solución lo hace de la siguiente manera, en cada ejecución que no llegue al caso base, se realizan dos llamadas recursivas para calcular los distintos posibles resultados, estas llamadas van tomando parámetros que causan que la matriz utilizada para guardar los datos se vaya cargando, si bien el algoritmo pasa por todas las filas de la matriz, no necesariamente pasa por todas las columnas de cada fila. La llamada recursiva que incluye al elemento actual en la solución le resta al valor objetivo ese elemento, ese cambio en el valor objetivo va a provocar un salto hacia otra columna de la matriz en la rama, efectivamente salteando la carga de celdas.
+%
+%%Meter acá un dibujo o algo asi !!!!!!!!!!!!!!!!!!!!
+%
+%El salto más corto que puede hacer el algoritmo es una unidad, por lo que si en todas las ramas donde el algoritmo salta, solo salta 1 vez entonces se calcula a lo sumo la mitad de la matriz, ya que en cada llamada recursiva se calcula la celda de arriba y la de arriba a la izquierda de la actual, y no se calculan las celdas que esten directamente a la izquierda o a la derecha de la actual.
+%
+%%Meter acá un dibujo de la matriz cargada a la mitad.
+%
+%Como el algoritmo para al pasarse de las dimensiones de la matriz, la función recursiva es $O(N*V)$, ya que ese es el tamaño de la matriz que el algoritmo va llenando.
+%
+%Entonces el algoritmo es $O(N*V)$
 
-%Meter acá un dibujo o algo asi !!!!!!!!!!!!!!!!!!!!
-
-El salto más corto que puede hacer el algoritmo es una unidad, por lo que si en todas las ramas donde el algoritmo salta, solo salta 1 vez entonces se calcula a lo sumo la mitad de la matriz, ya que en cada llamada recursiva se calcula la celda de arriba y la de arriba a la izquierda de la actual, y no se calculan las celdas que esten directamente a la izquierda o a la derecha de la actual.
-
-%Meter acá un dibujo de la matriz cargada a la mitad.
-
-Como el algoritmo para al pasarse de las dimensiones de la matriz, la función recursiva es $O(N*V)$, ya que ese es el tamaño de la matriz que el algoritmo va llenando.
-
-Entonces el algoritmo es $O(N*V)$
+Vamos a ver que la complejidad del algoritmo es la pedida, primero se carga la matriz donde guardamos los resultados para no calcularlos de nuevo, eso es $O(N*V)$, ahora veamos que el resto da también $O(N*V)$.
+La función recursiva del algortimo se mueve por la matriz utilizando dos parámetros, $i$ y $j$, $i$ está acotado por $|S| = N$ y $j$ esta acotado por $V$, como el valor mínimo que puede tomar cada uno es 0 (cuando alguna de las dos es $<= 0$ se llega a un caso base), entonces por las combinaciones posibles que pueden tomar los parametros, la funcion se llama a lo sumo $N*V$ veces. Ahora veamos los pesos de las llamadas recursivas, si la solución que busca la llamada no fue calculada anteriormente, 	entonces se van a realizar llamadas que eventualmente llegan a los casos base, que son $O(1)$, luego se realizan operaciones $O(1)$ para calcular el máximo valor devuelto por las llamadas recursivas y guardarlo en la matriz. Si la solución que busca ya había sido calculada entonces se obtiene la solución en $O(1)$ accediendo a la matriz. Entonces las llamadas recursivas son $O(1)$ y como a lo sumo se realizan $O(N*V)$ llamadas por lo dicho anteriormente.
+Si juntamos las complejidades entonces tenemos $O(N*V) + O(N*V) = O(2*N*V) = O(N*V)$. Y entonces la complejidad del algoritmo es $O(N*V)$.
 
 \subsection{Programaci\'on Din\'amica Bottom Up}
 
@@ -328,13 +339,13 @@ Como fue mencionado anteriormente nos interesa saber cuál de los algoritmos es 
 %\\
 
 \subsection{Experimentos sobre complejidad}
-Antes de comparar los algoritmos vamos a ver que las complejidades calculadas para cada uno sean las correctas, si tomamos los resultados en tiempo que nos va dando cada algoritmo y los dividimos por la función que representa la complejidad de cada uno, el resultado debería dar acercase a $1$. Si graficamos esto entonces deberiamos obtener una linea parecida a una función constante.
+Antes de comparar los algoritmos vamos a ver que las complejidades calculadas para cada uno sean las correctas, si tomamos los resultados en tiempo que nos va dando cada algoritmo y los dividimos por la función que representa la complejidad de cada uno, el resultado debería dar acercase a $1$, o ir decreciendo si el algoritmo es de menor complejidad. Si graficamos esto entonces deberíamos obtener una linea parecida a una función constante o una función lineal decreciente.
 
 \subsection{Backtracking vs Fuerza Bruta}
 
 \subsection{Comparación entre algoritmos de programación dinámica}
 
-%REESCRIBIR UN TOQUE ESTOOOOO
+%REHACER ESTE
 Ya que los algoritmos Top Down y Bottom Up resultaron mejores, nos interesaría saber cuál de ellos es mejor, para eso se hicieron dos experimentos, uno donde se altera la cantidad de elementos del conjunto y otro donde se altera el valor objetivo del problema.
 \\
 El primer experimento produjo el suguiente gráfico:
@@ -364,5 +375,9 @@ Luego de la experimentación podemos concluir que el algoritmo más óptimo para
 %\section{Código}
 
 %\lstinputlisting[language=C++]{main.cpp}
+
+\section{Cambios}
+
+%Acá van los cambios con la version anterior
 
 \end{document}

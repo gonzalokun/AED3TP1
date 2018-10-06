@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.9.11)  5 OCT 2018 10:57
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.9.11)  6 OCT 2018 14:14
 entering extended mode
 **./AED3TP1.tex
 (AED3TP1.tex
@@ -1140,7 +1140,90 @@ Underfull \hbox (badness 10000) in paragraph at lines 47--47
 
 {C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map} <./logo_dc.jpg> <./logo_ub
 a.jpg>] [1]
-Underfull \hbox (badness 10000) in paragraph at lines 139--140
+! Missing $ inserted.
+<inserted text> 
+                $
+l.132 ...If{$not (tamMejorConj == -1)$ \land pepe}
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+! LaTeX Error: Command \item invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.133 			\EndIf
+               
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.133 			\EndIf
+               
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.133 			\EndIf
+               
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.134 
+      
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.134 
+      
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Extra }, or forgotten \endgroup.
+\par ...m \@noitemerr {\@@par }\fi \else {\@@par }
+                                                  \fi 
+l.134 
+      
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 136--137
+[] \OT1/cmr/bx/n/10 re-turn $\OML/cmm/m/it/10 minPos\OT1/cmr/m/n/10 (\OML/cmm/m
+/it/10 longActual; subsetSumBacktrackingAUX\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 S;
+ V; inicio; longActual \OMS/cmsy/m/n/10   \OT1/cmr/m/n/10 1\OML/cmm/m/it/10 ; s
+umActual \OMS/cmsy/m/n/10  
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 142--143
 [] \OT1/cmr/bx/n/10 re-turn $\OML/cmm/m/it/10 minPos\OT1/cmr/m/n/10 (\OML/cmm/m
 /it/10 subsetSumBacktrackingAUX\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 S; V; inicio \
 OT1/cmr/m/n/10 + 1\OML/cmm/m/it/10 ; longActual \OT1/cmr/m/n/10 + 1\OML/cmm/m/i
@@ -1148,36 +1231,36 @@ t/10 ; sumActual \OT1/cmr/m/n/10 +
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 146--150
+Underfull \hbox (badness 10000) in paragraph at lines 149--153
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 151--153
+Underfull \hbox (badness 10000) in paragraph at lines 154--156
 
  []
 
-[2] [3] [4]
-Underfull \hbox (badness 10000) in paragraph at lines 311--329
+[2] [3] [4] [5] [6]
+Underfull \hbox (badness 10000) in paragraph at lines 318--336
 
  []
 
-<G2.pdf, id=37, 722.7pt x 361.35pt>
+<G2.pdf, id=44, 722.7pt x 361.35pt>
 File: G2.pdf Graphic file (type pdf)
  <use G2.pdf>
-Package pdftex.def Info: G2.pdf used on input line 341.
+Package pdftex.def Info: G2.pdf used on input line 350.
 (pdftex.def)             Requested size: 432.48355pt x 216.24376pt.
- [5]
-<G4.pdf, id=41, 722.7pt x 361.35pt>
+
+<G4.pdf, id=45, 722.7pt x 361.35pt>
 File: G4.pdf Graphic file (type pdf)
  <use G4.pdf>
-Package pdftex.def Info: G4.pdf used on input line 347.
+Package pdftex.def Info: G4.pdf used on input line 356.
 (pdftex.def)             Requested size: 432.48355pt x 216.24376pt.
- [6 <./G2.pdf> <./G4.pdf
+ [7 <./G2.pdf> <./G4.pdf
 
 pdfTeX warning: pdflatex (file ./G4.pdf): PDF inclusion: multiple pdfs with pag
 e group included in a single page
->] (AED3TP1.aux
+>] [8] (AED3TP1.aux
 LaTeX Info: Redefining \. on input line 7.
 LaTeX Info: Redefining \% on input line 7.
 ) ) 
@@ -1188,7 +1271,7 @@ Here is how much of TeX's memory you used:
  17802 multiletter control sequences out of 15000+200000
  8578 words of font info for 33 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 50i,8n,45p,890b,359s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 50i,8n,45p,1000b,359s stack positions out of 5000i,500n,10000p,200000b,50000s
 <D:/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><D:/MiKTeX 2.9/font
 s/type1/public/amsfonts/cm/cmbx12.pfb><D:/MiKTeX 2.9/fonts/type1/public/amsfont
 s/cm/cmcsc10.pfb><D:/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/M
@@ -1200,9 +1283,9 @@ s/cm/cmss10.pfb><D:/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmssbx10.pfb><D:/
 MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><D:/MiKTeX 2.9/fonts/type1
 /public/amsfonts/cm/cmsy7.pfb><D:/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmt
 i10.pfb><D:/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on AED3TP1.pdf (7 pages, 595869 bytes).
+Output written on AED3TP1.pdf (9 pages, 598196 bytes).
 PDF statistics:
- 182 PDF objects out of 1000 (max. 8388607)
+ 188 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  33 words of extra memory for PDF output out of 10000 (max. 10000000)
 

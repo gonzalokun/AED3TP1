@@ -5,6 +5,7 @@
 #include <fstream>
 #include <chrono>
 #include <cstring>
+#define CANTREP 3
 
 //Todo el código se encuentra en el mismo archivo
 //para facilitar lectura/localizacion del código
@@ -90,9 +91,10 @@ int minimoPositivo(int a, int b){ //O(1)
 }
 
 //Función recursiva que resuelve el backtracking
-int subsetSumBTRec(std::vector<int>& conjuntoInicial, int valorObjetivo, int inicio, int longActual, int sumActual){
+int subsetSumBTRec(std::vector<int>& conjuntoInicial, int valorObjetivo, int inicio, int longActual, int sumActual, int& tamMejorSol){
     if(inicio == conjuntoInicial.size()){
         if(sumActual == valorObjetivo){
+            tamMejorSol = minimoPositivo(tamMejorSol, longActual);
             return longActual;
         }
         else{
@@ -100,8 +102,14 @@ int subsetSumBTRec(std::vector<int>& conjuntoInicial, int valorObjetivo, int ini
         }
     }
     else{
+        if(tamMejorSol != -1 && longActual >= tamMejorSol){
+            //Poda de optimalidad, si el tamaño actual es mas grande que el mejor que encontramos, se sale de la función
+            return -1;
+        }
+
         if(sumActual == valorObjetivo){
-            return minimoPositivo(longActual, subsetSumBTRec(conjuntoInicial, valorObjetivo, inicio, longActual - 1, sumActual - conjuntoInicial[inicio - 1]));
+            tamMejorSol = minimoPositivo(tamMejorSol, longActual);
+            return minimoPositivo(longActual, subsetSumBTRec(conjuntoInicial, valorObjetivo, inicio, longActual - 1, sumActual - conjuntoInicial[inicio - 1], tamMejorSol));
         }
         else if(sumActual > valorObjetivo){
             //Corte De Factibilidad, como esta ordenado el conjunto seguir por esta rama nunca puede dar la solucion
@@ -109,10 +117,10 @@ int subsetSumBTRec(std::vector<int>& conjuntoInicial, int valorObjetivo, int ini
         }
         else if(sumActual == sumActual + conjuntoInicial[inicio]){
             //El elemento que sigue es un cero, conviene no incluirlo en el conjunto asi no aumenta la cardinalidad
-            return subsetSumBTRec(conjuntoInicial, valorObjetivo, inicio + 1, longActual, sumActual);
+            return subsetSumBTRec(conjuntoInicial, valorObjetivo, inicio + 1, longActual, sumActual, tamMejorSol);
         }
         else{
-            return minimoPositivo(subsetSumBTRec(conjuntoInicial, valorObjetivo, inicio + 1, longActual + 1, sumActual + conjuntoInicial[inicio]), subsetSumBTRec(conjuntoInicial, valorObjetivo, inicio + 1, longActual, sumActual));
+            return minimoPositivo(subsetSumBTRec(conjuntoInicial, valorObjetivo, inicio + 1, longActual + 1, sumActual + conjuntoInicial[inicio], tamMejorSol), subsetSumBTRec(conjuntoInicial, valorObjetivo, inicio + 1, longActual, sumActual, tamMejorSol));
         }
     }
 }
@@ -120,8 +128,8 @@ int subsetSumBTRec(std::vector<int>& conjuntoInicial, int valorObjetivo, int ini
 int subsetSumBacktracking(std::vector<int>& conjuntoInicial, int valorObjetivo){//O(2^n)
     //Ordeno el conjunto
     std::sort(conjuntoInicial.begin(), conjuntoInicial.end()); //n*log(n)
-
-    return subsetSumBTRec(conjuntoInicial, valorObjetivo, 0, 0, 0); //O(2^n)
+    int tamMejorSol = -1;
+    return subsetSumBTRec(conjuntoInicial, valorObjetivo, 0, 0, 0, tamMejorSol); //O(2^n)
 }
 
 //Fin código BT
@@ -255,14 +263,27 @@ int main(int argc, char** argv)
     int resultadoFB = -1, resultadoBT = -1, resultadoPDTD = -1, resultadoPDBU = -1;
 
     std::cout << "Resolviendo con Fuerza Bruta" << std::endl;
-
     auto ahora = std::chrono::_V2::steady_clock::now();
-    resultadoFB = subsetSumFuerzaBruta(entrada.second, entrada.first);
     auto fin = std::chrono::_V2::steady_clock::now();
+    auto duracion1 = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora).count();
+    duracion1 = 0;
+
+    for(int rep = 0; rep < CANTREP;rep++){
+        //
+        ahora = std::chrono::_V2::steady_clock::now();
+        resultadoFB = subsetSumFuerzaBruta(entrada.second, entrada.first);
+        fin = std::chrono::_V2::steady_clock::now();
+
+        auto temp = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
+
+        duracion1 += temp.count();
+    }
+
+    duracion1 /= CANTREP;
+    //std::chrono::milliseconds duracion1 = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
 
     std::cout << "Tam. de conjunto minimo que suma " << entrada.first << ": " << resultadoFB << std::endl;
-    auto duracion1 = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
-    std::cout << "El Algoritmo de Fuerza Bruta tardo: " << duracion1.count() << " milisegundos" << std::endl;
+    std::cout << "El Algoritmo de Fuerza Bruta tardo: " << duracion1 << " milisegundos" << std::endl;
 
     std::cout << "-------------------------------------------------------" << std::endl;
     std::cout << "Resolviendo con Backtracking" << std::endl;
@@ -302,7 +323,7 @@ int main(int argc, char** argv)
     std::ofstream salida("output.csv", std::ios::app);
 
     salida << entrada.second.size() << "," << entrada.first << ",";
-    salida << duracion1.count() << ",";
+    salida << duracion1 << ",";
     salida << duracion2.count() << ",";
     salida << duracion3.count() << ",";
     salida << duracion4.count(); //<< ",";
