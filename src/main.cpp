@@ -5,7 +5,7 @@
 #include <fstream>
 #include <chrono>
 #include <cstring>
-#define CANTREP 5
+#define CANTREP 4
 
 //Todo el código se encuentra en el mismo archivo
 //para facilitar lectura/localizacion del código
@@ -271,7 +271,8 @@ int main(int argc, char** argv)
     for(int rep = 0; rep < CANTREP;rep++){
         //
         ahora = std::chrono::_V2::steady_clock::now();
-        resultadoFB = subsetSumFuerzaBruta(entrada.second, entrada.first);
+        //resultadoFB = subsetSumFuerzaBruta(entrada.second, entrada.first);
+        //resultadoFB = -1;
         fin = std::chrono::_V2::steady_clock::now();
 
         auto temp = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
@@ -296,7 +297,8 @@ int main(int argc, char** argv)
 
     for(int rep = 0; rep < CANTREP; rep++){
         ahora = std::chrono::_V2::steady_clock::now();
-        resultadoBT = subsetSumBacktracking(entrada.second, entrada.first);
+        //resultadoBT = subsetSumBacktracking(entrada.second, entrada.first);
+        //resultadoBT = -1;
         fin = std::chrono::_V2::steady_clock::now();
 
         auto temp = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
@@ -322,6 +324,7 @@ int main(int argc, char** argv)
     for(int rep = 0; rep < CANTREP; rep++){
         ahora = std::chrono::_V2::steady_clock::now();
         resultadoPDTD = subsetSumPDTD(entrada.second, entrada.first);
+        //resultadoPDTD = -1;
         fin = std::chrono::_V2::steady_clock::now();
 
         auto temp = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
@@ -348,6 +351,7 @@ int main(int argc, char** argv)
     for(int rep = 0; rep < CANTREP; rep++){
         ahora = std::chrono::_V2::steady_clock::now();
         resultadoPDBU = subsetSumPDBU(entrada.second, entrada.first);
+        //resultadoPDBU = -1;
         fin = std::chrono::_V2::steady_clock::now();
 
         auto temp = std::chrono::duration_cast<std::chrono::milliseconds>(fin - ahora);
